@@ -17,10 +17,47 @@ struct Ladder{
             myHeadCount = headCount ?? 0
             myLadderHeight = ladderHeight ?? 0
         }
-       
+    }
+
+    func makeLadder(cnt: Int, height: Int)-> [String]{
         
+        if errorCode != -1 {
+            
+            var footholdArr: [[Int]] = [[Int]](repeating: [Int](repeating: 2, count: cnt-1), count: height)
+            var ladderArr: [String] = [String](repeating: "", count: height)
+            
+            for yIndex in 0..<height {
+                
+                for xIndex in 0..<(cnt-1) {
+                    
+                    ladderArr[yIndex] += "|"
+                    footholdArr[yIndex][xIndex] = Int.random(in: 0...1)
+                    
+                    if footholdArr[yIndex][xIndex] == 1 {
+                        ladderArr[yIndex] += "-"
+                    }else {
+                        ladderArr[yIndex] += " "
+                    }
+                    
+                }
+                
+                ladderArr[yIndex] += "|"
+            }
+            
+            return ladderArr
+            
+        }else {
+            return ["---프 로 그 램 종 료---"]
+        }
+        
+    }
+}
+func printLadder(Ladder: [String],height: Int) {
+    for y in Ladder{
+        print(y)
     }
 }
 
 var someLadder = Ladder()
 someLadder.setLadder()
+printLadder(Ladder: someLadder.makeLadder(cnt: someLadder.myHeadCount, height: someLadder.myLadderHeight), height: someLadder.myLadderHeight)
