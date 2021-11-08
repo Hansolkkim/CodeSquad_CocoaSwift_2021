@@ -15,11 +15,16 @@ struct ArrayPractice {
     
     func fillArray() -> [[Int]] {
         var Array2D: [[Int]] = [[Int]]()
-        Array2D.append([1])
-        Array2D.append([6,7])
-        Array2D.append([11,12,13])
-        Array2D.append([16,17,18,19])
-        Array2D.append([21,22,23,24,25])
+        
+        for row in 0...4 {
+            var arrayPerRow = [Int]()
+            for column in 0...4 {
+                if column <= row {
+                    arrayPerRow.append(5 * row + column + 1)
+                }
+            }
+            Array2D.append(arrayPerRow)
+        }
         
         return Array2D
     }
