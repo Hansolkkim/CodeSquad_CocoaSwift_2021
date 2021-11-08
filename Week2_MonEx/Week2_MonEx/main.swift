@@ -20,7 +20,10 @@ myArray.printMagicSquare(input: myArray.makeMagicSquare(row: sizeMagicSquare))
 
 //연습문제2 출력
 var myValidator = Validator()
-let myIDValidator = myValidator.getID()
+let myID = myValidator.getID()
 
-myValidator.printIDValidator(resultIDValidation: myValidator.IDValidator(ID: myIDValidator))
+myValidator.printIDValidator(resultIDValidation: myValidator.IDValidator(ID: myID))
 
+//연습문제3 출력
+let myPW = myValidator.getPassword()
+myValidator.printPasswordValidator(input: myValidator.passwordValidator(password: myPW))
