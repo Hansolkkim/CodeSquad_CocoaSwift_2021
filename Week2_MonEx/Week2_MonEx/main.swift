@@ -35,3 +35,7 @@ myValidator.printSocialNumValidator(input: myValidator.socialNumValidator(social
 //연습문제5 출력
 let myAntPuzzle = antPuzzle()
 print(myAntPuzzle.antFunction(inputArray: [1, 1]))
+
+//연습문제7 출력
+let myDictionary = usingDictionary()
+print(myDictionary.duplicatedWords(inputWords: ["가을", "우주", "너굴", "우주", "겨울", "봄봄", "너굴", "너굴"]))
