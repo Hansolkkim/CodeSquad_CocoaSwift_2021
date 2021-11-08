@@ -27,3 +27,7 @@ myValidator.printIDValidator(resultIDValidation: myValidator.IDValidator(ID: myI
 //연습문제3 출력
 let myPW = myValidator.getPassword()
 myValidator.printPasswordValidator(input: myValidator.passwordValidator(password: myPW))
+
+//연습문제4 출력
+let mySocialNum = myValidator.getSocialNum()
+myValidator.printSocialNumValidator(input: myValidator.socialNumValidator(socialNum: mySocialNum))

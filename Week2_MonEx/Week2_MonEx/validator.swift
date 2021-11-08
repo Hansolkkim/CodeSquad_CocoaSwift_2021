@@ -108,4 +108,48 @@ struct Validator {
     func printPasswordValidator(input: Int) {
         print("당신의 Password 보안 등급은 \(input)등급입니다.")
     }
+
+/* 연습문제4. 주민번호 판별 검사*/
+    func getSocialNum() -> String {
+        
+        print("주민등록번호 13자리를 입력해주세요 (-는 제외해주세요) : ", terminator: "")
+        let socialNumber = readLine()!
+        
+        return socialNumber
+    }
+    
+    func socialNumValidator(socialNum: String) -> Bool {
+        
+        if socialNum.count != 13 {
+            return false
+        } else {
+            var N: Int = 0
+            let socialBit: [Int] = socialNum.map { Int(String($0)) ?? 0}
+            
+            var a = 2
+            for i in 0...7 {
+                N += a * socialBit[i]
+                a += 1
+            }
+            a = 2
+            for i in 8...11{
+                N += a * socialBit[i]
+                a += 1
+            }
+            let K = (11 - (N % 11)) % 10
+            if K == socialBit[12] {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+    func printSocialNumValidator(input: Bool) {
+        
+        if input == true {
+            print("정상적인 주민등록번호임이 확인되었습니다.")
+        } else {
+            print("잘못된 주민등록번호입니다.")
+        }
+    }
 }
