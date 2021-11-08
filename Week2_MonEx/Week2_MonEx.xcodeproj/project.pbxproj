@@ -10,6 +10,7 @@
 		02980BC52738FFC7009DAA11 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02980BC42738FFC7009DAA11 /* main.swift */; };
 		02980BCE27390210009DAA11 /* ArrayPractice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02980BCD27390210009DAA11 /* ArrayPractice.swift */; };
 		02980BD2273907F4009DAA11 /* validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02980BD1273907F4009DAA11 /* validator.swift */; };
+		02980BD427390C86009DAA11 /* antPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02980BD327390C86009DAA11 /* antPuzzle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,7 @@
 		02980BC42738FFC7009DAA11 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		02980BCD27390210009DAA11 /* ArrayPractice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayPractice.swift; sourceTree = "<group>"; };
 		02980BD1273907F4009DAA11 /* validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = validator.swift; sourceTree = "<group>"; };
+		02980BD327390C86009DAA11 /* antPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = antPuzzle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				02980BC42738FFC7009DAA11 /* main.swift */,
+				02980BD327390C86009DAA11 /* antPuzzle.swift */,
 				02980BCD27390210009DAA11 /* ArrayPractice.swift */,
 				02980BD1273907F4009DAA11 /* validator.swift */,
 			);
@@ -129,6 +132,7 @@
 				02980BCE27390210009DAA11 /* ArrayPractice.swift in Sources */,
 				02980BD2273907F4009DAA11 /* validator.swift in Sources */,
 				02980BC52738FFC7009DAA11 /* main.swift in Sources */,
+				02980BD427390C86009DAA11 /* antPuzzle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

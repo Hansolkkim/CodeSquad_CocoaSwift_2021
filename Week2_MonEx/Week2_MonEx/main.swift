@@ -31,3 +31,7 @@ myValidator.printPasswordValidator(input: myValidator.passwordValidator(password
 //연습문제4 출력
 let mySocialNum = myValidator.getSocialNum()
 myValidator.printSocialNumValidator(input: myValidator.socialNumValidator(socialNum: mySocialNum))
+
+//연습문제5 출력
+let myAntPuzzle = antPuzzle()
+print(myAntPuzzle.antFunction(inputArray: [1, 1]))
