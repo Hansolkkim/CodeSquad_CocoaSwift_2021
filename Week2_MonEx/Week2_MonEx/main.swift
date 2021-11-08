@@ -18,5 +18,9 @@ myArray.printArray(array: myArray.setBoolArray(), newChar: "$")
 var sizeMagicSquare = myArray.setMagicSquareSize()
 myArray.printMagicSquare(input: myArray.makeMagicSquare(row: sizeMagicSquare))
 
+//연습문제2 출력
+var myValidator = Validator()
+let myIDValidator = myValidator.getID()
 
+myValidator.printIDValidator(resultIDValidation: myValidator.IDValidator(ID: myIDValidator))
 
