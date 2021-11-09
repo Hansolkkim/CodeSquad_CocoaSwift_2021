@@ -19,15 +19,12 @@ class ViewController: UIViewController {
 //        let unconveredVal = sender
     }
     @IBAction func convertButton(_ sender: UIButton) {
-        let unconvertedVal = Float(unconvertedValue.text!) ?? 0
-        let convertedVal = convertToInches(fromCM: unconvertedVal)
-        convertedValue.text = String(convertedVal)
-    }
-    
-    func convertToInches(fromCM: Float) -> Float {
-        var result: Float = 0
-        result = fromCM / 2.54
-        return result
+        
+        let unconvertedVal = Measurement(value: Double(unconvertedValue.text!) ?? 0.0, unit: UnitLength.centimeters)
+        let convertedVal = unconvertedVal.converted(to: UnitLength.inches)
+        convertedValue.text = String(convertedVal.value) //Measurement를 사용하면 데이터 타입이 Measurement로 정해져서 그 값을 변환하기 어려웠음.
+                                                     //String으로 변환하기 위해, convertedVal의 값만을 사용하는 convertedVal.value를 String으로 변환했음.
+        
     }
     
 }
