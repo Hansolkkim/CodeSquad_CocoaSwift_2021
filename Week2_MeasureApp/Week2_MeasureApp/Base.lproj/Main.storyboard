@@ -26,10 +26,10 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ggt-UH-8Vq">
-                                <rect key="frame" x="140" y="215" width="96" height="31"/>
+                                <rect key="frame" x="148" y="215" width="80" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Cm -&gt; Inch"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Convert!"/>
                                 <connections>
                                     <action selector="convertButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sTx-vT-ZLN"/>
                                 </connections>
