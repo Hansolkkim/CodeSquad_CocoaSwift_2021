@@ -118,10 +118,10 @@ struct ArrayPractice {
             } else { //이동할 자리가 안비었으면 원래의 자리의 바로 아래에 값 대입
                 
                 nextRow = myRow + 1
-                if nextRow > row - 1 { //마지막 행에서 아래로 이동할 경우
-                    
-                    nextRow = 0
-                }
+//                if nextRow > row - 1 { //마지막 행에서 아래로 이동할 경우
+//
+//                    nextRow = 0
+//                }
                 nextColumn = myColumn
                 magicSquare[nextRow][nextColumn] = numToPutIn
             }

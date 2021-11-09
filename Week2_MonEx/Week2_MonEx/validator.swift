@@ -82,44 +82,34 @@ struct Validator {
         
         var grade = 0
         let length = password.count
-        var bitIsNumber = 0, bitIsLetter = 0, bitIsSymbol = 0
-        
+        let numberCharacterset: CharacterSet = CharacterSet(charactersIn: "0123456789")
+        let letterCharacterset: CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        let symbolCharacterset: CharacterSet = CharacterSet(charactersIn: "`~!@#$%^&*()-_=+\\|]}[{'\";:/?.>,<")
+        let numberAndLetterCharacterset: CharacterSet = numberCharacterset.union(letterCharacterset)
+        let passwordSet = CharacterSet(charactersIn: password)
+
         if length < 8 { //password 길이가 8글자 미만
             
-            for bit in password {
-                
-                if bit.isNumber { //password 각 자리값이 숫자일 떄
-                    
-                    bitIsNumber += 1
-                } else if bit.isLetter { //password 각 자리값이 문자일 때
-                    
-                    bitIsLetter += 1
-                }
-            }
-            if bitIsNumber == length { //password가 숫자로만 구성되고 길이가 8글자 미만
+            if passwordSet.intersection(numberAndLetterCharacterset) != [] {
                 grade += 1
-            }else if bitIsLetter == length { //password가 문자로만 구성되고 길이가 8글자 미만
-                grade += 2
-            }else { //숫자와 문자로 섞여서 구성되고 길이가 8글자 미만
-                grade += 3
-            }
-        } else if password.count >= 8 { //password 길이가 8글자 이상
-            grade = 3 // 최소 3 Level
-            for bit in password {
-                if bit.isNumber {
-                    bitIsNumber += 1
-                    continue
-                } else if bit.isLetter {
-                    bitIsLetter += 1
-                    continue
-                } else if bit.isSymbol || (bit.asciiValue! > 32 && bit.asciiValue! < 48) { //
-                    bitIsSymbol += 1
-                }
-            }
-            if bitIsNumber > 0 && bitIsLetter > 0 { //영문자와 한 개 이상의 숫자, 길이 8글자 이상
-                grade += 1
-                if bitIsSymbol > 0 { //영문자, 숫자, 특수문자로 구성된 password
+                if passwordSet.intersection(letterCharacterset) != [] {
                     grade += 1
+                    if passwordSet.intersection(symbolCharacterset) != [] {
+                        grade += 1
+                    }
+                }
+            }
+            
+        } else if length >= 8 { //password 길이가 8글자 이상
+            grade = 2 // 최소 2 Level
+            
+            if passwordSet.intersection(numberAndLetterCharacterset) != [] {
+                grade += 1
+                if passwordSet.intersection(letterCharacterset) != [] && passwordSet.intersection(numberCharacterset) != [] {
+                    grade += 1
+                    if passwordSet.intersection(symbolCharacterset) != [] {
+                        grade += 1
+                    }
                 }
             }
         }
