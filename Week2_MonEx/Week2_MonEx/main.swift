@@ -7,7 +7,7 @@
 
 import Foundation
 
-연습문제1, 미션1 출력
+//연습문제1, 미션1 출력
 var myArray = ArrayPractice()
 myArray.printArray(array: myArray.fillArray())
 
