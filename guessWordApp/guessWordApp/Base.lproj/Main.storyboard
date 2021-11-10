@@ -1,24 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="guessWordApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Current Word" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s4A-tQ-bJY">
+                                <rect key="frame" x="138" y="129" width="103" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next Word" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CbK-0O-h2Z">
+                                <rect key="frame" x="257" y="129" width="71" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjN-n1-nUn">
+                                <rect key="frame" x="154" y="291" width="67" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" name="AccentColor"/>
+                                        <color key="strokeColor" systemColor="tintColor"/>
+                                    </backgroundConfiguration>
+                                    <color key="baseForegroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="compareWords:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qrY-nj-nc0"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0Ju-8t-3B9">
+                                <rect key="frame" x="138" y="212" width="99" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="s4A-tQ-bJY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5YP-RM-yMn"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="CbK-0O-h2Z" secondAttribute="trailing" constant="47" id="6fW-Ym-96Y"/>
+                            <constraint firstItem="0Ju-8t-3B9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="AkS-rR-6PC"/>
+                            <constraint firstItem="CbK-0O-h2Z" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="129" id="Ec8-cc-7ag"/>
+                            <constraint firstItem="s4A-tQ-bJY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="138" id="Emc-cx-Y9M"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0Ju-8t-3B9" secondAttribute="trailing" constant="138" id="L5j-ZP-Nhj"/>
+                            <constraint firstItem="CbK-0O-h2Z" firstAttribute="leading" secondItem="s4A-tQ-bJY" secondAttribute="trailing" constant="20" id="UIU-FA-5vt"/>
+                            <constraint firstItem="0Ju-8t-3B9" firstAttribute="top" secondItem="s4A-tQ-bJY" secondAttribute="bottom" constant="62.5" id="WIL-ZU-xoF"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="CbK-0O-h2Z" secondAttribute="bottom" constant="504" id="bvh-L9-54z"/>
+                            <constraint firstItem="bjN-n1-nUn" firstAttribute="top" secondItem="0Ju-8t-3B9" secondAttribute="bottom" constant="45" id="fff-yc-F4M"/>
+                            <constraint firstItem="s4A-tQ-bJY" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="129" id="mKd-7F-voe"/>
+                            <constraint firstItem="0Ju-8t-3B9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="138" id="mti-dv-Nia"/>
+                            <constraint firstItem="bjN-n1-nUn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xTR-JF-wpu"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="compileButton" destination="bjN-n1-nUn" id="T9f-hy-lAE"/>
+                        <outlet property="currentWord" destination="s4A-tQ-bJY" id="yum-OG-GmC"/>
+                        <outlet property="nextWord" destination="CbK-0O-h2Z" id="izk-F1-JBJ"/>
+                        <outlet property="typedWord" destination="0Ju-8t-3B9" id="6kZ-fb-Kte"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="20" y="97.601199400299862"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="secondarySystemGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="tintColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>
