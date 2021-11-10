@@ -9,14 +9,14 @@ import Foundation
 
 struct validator {
     
+    let numberCharacterset: CharacterSet = CharacterSet.decimalDigits
+    let letterCharacterset: CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    let symbolCharacterset: CharacterSet = CharacterSet(charactersIn: "-,+,!,@,#,$,%")
+    
     func passwordValidator(password: String) -> Int {
-        
+        let numberAndLetterCharacterset: CharacterSet = numberCharacterset.union(letterCharacterset)
         var grade = 0
         let length = password.count
-        let numberCharacterset: CharacterSet = CharacterSet.decimalDigits
-        let letterCharacterset: CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-        let symbolCharacterset: CharacterSet = CharacterSet(charactersIn: "-,+,!,@,#,$,%")
-        let numberAndLetterCharacterset: CharacterSet = numberCharacterset.union(letterCharacterset)
         let passwordSet = CharacterSet(charactersIn: password)
 
         if length < 8 { //password 길이가 8글자 미만
