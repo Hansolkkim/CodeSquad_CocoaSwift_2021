@@ -78,44 +78,66 @@ struct Validator {
         return password
     }
     
-    func passwordValidator(password: String) -> Int {
-        
-        var grade = 0
-        let length = password.count
-        let numberCharacterset: CharacterSet = CharacterSet(charactersIn: "0123456789")
-        let letterCharacterset: CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-        let symbolCharacterset: CharacterSet = CharacterSet(charactersIn: "`~!@#$%^&*()-_=+\\|]}[{'\";:/?.>,<")
-        let numberAndLetterCharacterset: CharacterSet = numberCharacterset.union(letterCharacterset)
-        let passwordSet = CharacterSet(charactersIn: password)
+    //
+    //  validator.swift
+    //  enterPasswordApp
+    //
+    //  Created by 김한솔 on 2021/11/10.
+    //
 
-        if length < 8 { //password 길이가 8글자 미만
+    import Foundation
+
+    struct validator {
+        
+        func passwordValidator(password: String) -> Int {
             
-            if passwordSet.intersection(numberAndLetterCharacterset) != [] {
-                grade += 1
-                if passwordSet.intersection(letterCharacterset) != [] {
+            var grade = 0
+            let length = password.count
+            let numberCharacterset: CharacterSet = CharacterSet.decimalDigits
+            let letterCharacterset: CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+            let symbolCharacterset: CharacterSet = CharacterSet(charactersIn: "-,+,!,@,#,$,%")
+            let numberAndLetterCharacterset: CharacterSet = numberCharacterset.union(letterCharacterset)
+            let passwordSet = CharacterSet(charactersIn: password)
+
+            if length < 8 { //password 길이가 8글자 미만
+                
+                if passwordSet.intersection(numberAndLetterCharacterset) != [] {
                     grade += 1
-                    if passwordSet.intersection(symbolCharacterset) != [] {
+                    if passwordSet.intersection(letterCharacterset) != [] {
                         grade += 1
+                        if passwordSet.intersection(symbolCharacterset) != [] {
+                            grade += 1
+                        }
+                    } else if passwordSet.intersection(symbolCharacterset) != [] {
+                        grade += 2
                     }
+                } else if passwordSet.intersection(symbolCharacterset) != [] {
+                    grade = 3
+                }
+                
+            } else if length >= 8 { //password 길이가 8글자 이상
+                grade = 2 // 최소 2 Level
+                
+                if passwordSet.intersection(numberAndLetterCharacterset) != [] {
+                    grade += 1
+                    if passwordSet.intersection(letterCharacterset) != [] && passwordSet.intersection(numberCharacterset) != [] {
+                        grade += 1
+                        if passwordSet.intersection(symbolCharacterset) != [] {
+                            grade += 1
+                        }
+                    } else if passwordSet.intersection(symbolCharacterset) != [] {
+                        grade = 3
+                    }
+                    
                 }
             }
             
-        } else if length >= 8 { //password 길이가 8글자 이상
-            grade = 2 // 최소 2 Level
-            
-            if passwordSet.intersection(numberAndLetterCharacterset) != [] {
-                grade += 1
-                if passwordSet.intersection(letterCharacterset) != [] && passwordSet.intersection(numberCharacterset) != [] {
-                    grade += 1
-                    if passwordSet.intersection(symbolCharacterset) != [] {
-                        grade += 1
-                    }
-                }
-            }
+            return grade
         }
         
-        return grade
+        
     }
+
     
     func printPasswordValidator(input: Int) {
         print("당신의 Password 보안 등급은 \(input)등급입니다.")
