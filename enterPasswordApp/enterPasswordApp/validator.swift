@@ -9,11 +9,12 @@ import Foundation
 
 struct validator {
     
-    let numberCharacterset: CharacterSet = CharacterSet.decimalDigits
-    let letterCharacterset: CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    let symbolCharacterset: CharacterSet = CharacterSet(charactersIn: "-,+,!,@,#,$,%")
+    
     
     func passwordValidator(password: String) -> Int {
+        let numberCharacterset: CharacterSet = CharacterSet(charactersIn: "0123456789")
+        let letterCharacterset: CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        let symbolCharacterset: CharacterSet = CharacterSet(charactersIn: "-+!@#$%")
         let numberAndLetterCharacterset: CharacterSet = numberCharacterset.union(letterCharacterset)
         var grade = 0
         let length = password.count
