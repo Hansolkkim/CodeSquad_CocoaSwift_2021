@@ -29,25 +29,40 @@ struct numberBaseballGame {
         let myAnswerArr: [Int] = [num/100, (num%100)/10, (num%10)]
         var strikeCount = 0, ballCount = 0
         
-        for i in 0...2 {
-            
+            for i in 0...2 {
             if  myAnswerArr[i] == correctAnswer[i] {
                 strikeCount += 1
             } else if correctAnswer.contains(myAnswerArr[i]){
                 ballCount += 1
             }
         }
+        
+        
         if strikeCount == 3 {
             self.isStrike_3 = 1
         } else {
             self.isStrike_3 = 0
         }
         self.countPlayedTimes += 1
+            
+        
         return (strikeCount, ballCount)
     }
     
     func showGameScore() -> Bool {
         
         return countPlayedTimes < 9 && isStrike_3 == 1
+    }
+    
+    func getThreeNumber() -> Int {
+        
+        print("3자리 숫자를 입력하세요. : ",terminator: "")
+        var myNumber = Int(readLine()!) ?? 0
+        while (myNumber < 100) || (myNumber > 999) {
+            print("3자리로 된 숫자만 입력하실 수 있습니다.")
+            print("3자리 숫자를 입력하세요. : ",terminator: "")
+            myNumber = Int(readLine()!) ?? 0
+        }
+        return myNumber
     }
 }

@@ -28,11 +28,14 @@ var myGame = numberBaseballGame()
 myGame.newGame()
 
 while myGame.isStrike_3 == 0 {
-    print("3자리 숫자를 입력하세요. : ",terminator: "")
-    let (myStrike , myBall) = myGame.hit(num: Int(readLine() ?? "") ?? 0) //tuple로 hit함수의 반환값을 받음
+   
+    let (myStrike,myBall) = myGame.hit(num: myGame.getThreeNumber()) //tuple로 hit함수의 반환값을 받음
     print("\(myStrike) Strike, \(myBall) Ball")
     print("플레이 횟수 : \(myGame.countPlayedTimes)\n")
 }
+
+    
+
 print("정답은 \"\(myGame.correctAnswer[0]*100 + myGame.correctAnswer[1]*10 + myGame.correctAnswer[2])\" 이었습니다.")
 
 if myGame.showGameScore() {
