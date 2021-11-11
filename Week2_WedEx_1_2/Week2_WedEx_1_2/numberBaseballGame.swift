@@ -8,16 +8,16 @@
 import Foundation
 
 struct numberBaseballGame {
-    var correctAnswer: Int!
+    var correctAnswer: [Int] = [0, 0, 0]
     var countPlayedTimes: Int = 0
     var isStrike_3: Int = 0
     
     mutating func newGame() {
-        var tempNum = Int.random(in: 100...999)
+        var tempNum = [Int.random(in: 1...9), Int.random(in: 1...9), Int.random(in: 1...9)]
         
         //같은 숫자가 두개 이상 나오면 계속해서 random 돌려줌
-        while tempNum/100 == (tempNum%100)/10 || tempNum/100 == (tempNum%10) || (tempNum%100)/10 == tempNum%10 {
-            tempNum = Int.random(in: 100...999)
+        while tempNum[0] == tempNum[1] || tempNum[0] == tempNum[2] || tempNum[1] == tempNum[2] {
+            tempNum = [Int.random(in: 1...9), Int.random(in: 1...9), Int.random(in: 1...9)]
         }
         
         self.correctAnswer = tempNum
@@ -25,18 +25,17 @@ struct numberBaseballGame {
     
     mutating func hit(num: Int) -> (strikeCount: Int, ballCount: Int) {
         
-        let correctAnswerArr: [Int] = [correctAnswer/100, (correctAnswer%100)/10, (correctAnswer%10)]
         let myAnswerArr: [Int] = [num/100, (num%100)/10, (num%10)]
         var strikeCount = 0, ballCount = 0
         
         for i in 0...2 {
             
-            if  myAnswerArr[i] == correctAnswerArr[i] {
+            if  myAnswerArr[i] == correctAnswer[i] {
                 strikeCount += 1
             }
             for j in 0...2 {
                 
-                if i != j && myAnswerArr[i] == correctAnswerArr[j] {
+                if i != j && myAnswerArr[i] == correctAnswer[j] {
                     ballCount += 1
                 }
             }
