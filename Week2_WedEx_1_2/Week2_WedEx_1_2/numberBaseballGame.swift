@@ -13,9 +13,10 @@ struct numberBaseballGame {
     var isStrike_3: Int = 0
     
     mutating func newGame() {
+        //숫자야구에서 각 자리의 숫자에는 0이 포함되지 않기때문에 tempNum과 correctAnswer을 [Int]로 설정
         var tempNum = [Int.random(in: 1...9), Int.random(in: 1...9), Int.random(in: 1...9)]
         
-        //같은 숫자가 두개 이상 나오면 계속해서 random 돌려줌
+        //같은 숫자가 두개 이상 나오면 계속해서 random 돌려줌/ 조건에 따른 반복이므로 while문 사용
         while tempNum[0] == tempNum[1] || tempNum[0] == tempNum[2] || tempNum[1] == tempNum[2] {
             tempNum = [Int.random(in: 1...9), Int.random(in: 1...9), Int.random(in: 1...9)]
         }
@@ -32,12 +33,8 @@ struct numberBaseballGame {
             
             if  myAnswerArr[i] == correctAnswer[i] {
                 strikeCount += 1
-            }
-            for j in 0...2 {
-                
-                if i != j && myAnswerArr[i] == correctAnswer[j] {
-                    ballCount += 1
-                }
+            } else if correctAnswer.contains(myAnswerArr[i]){
+                ballCount += 1
             }
         }
         if strikeCount == 3 {

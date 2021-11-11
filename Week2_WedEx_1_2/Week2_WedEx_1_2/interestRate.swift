@@ -4,7 +4,6 @@
 //
 //  Created by 김한솔 on 2021/11/10.
 //
-
 import Foundation
 
 struct interestRate {
