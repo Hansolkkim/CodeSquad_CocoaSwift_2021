@@ -7,11 +7,12 @@
 import Foundation
 
 struct interestRate {
+    var depositPeriod: Int = 0
     
-    func getInterestRate(byDay: Int) -> Double {
+    mutating func getInterestRate(byDay: Int) -> Double {
         
         var InterestRate: Double
-        
+        depositPeriod = byDay
         switch byDay {
             
         case 0...90 :
@@ -25,11 +26,11 @@ struct interestRate {
         default :
             InterestRate = 0.0
         }
-        
+
         return InterestRate
     }
     
-    func calculateAmount(day: Int, amount: Int) -> Double {
+    mutating func calculateAmount(day: Int, amount: Int) -> Double {
         
         var calculatedAmount: Double
         let myInterestRate = getInterestRate(byDay: day)
@@ -39,4 +40,18 @@ struct interestRate {
         return calculatedAmount
     }
     
+    func getPersonalDepositPeriod() -> Int {
+        
+        print("당신의 예금 거치 기간을 입력하세요. : ", terminator: "")
+        let myDay = Int(readLine() ?? "") ?? 0
+        return myDay
+    }
+    
+    mutating func testInterest(unitDay: Int) -> Double {
+        
+        let myAmount:Double
+        myAmount = calculateAmount(day: unitDay, amount: 1000000)
+        
+        return myAmount
+    }
 }
