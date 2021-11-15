@@ -7,5 +7,12 @@
 
 import Foundation
 
-print("Hello, World!")
+//연습문제 1 출력
+var myMatrix = Matrix(a: 1, b: 2, c: 3, d: 4)
+myMatrix.printMatrix(myMatrix)
 
+var otherMatrix = Matrix(a: 2, b: 3, c: 4, d: 5)
+otherMatrix.printMatrix(otherMatrix)
+
+myMatrix.printMatrix(myMatrix.sum(with: otherMatrix))
+myMatrix.printMatrix(myMatrix.product(with: otherMatrix))
