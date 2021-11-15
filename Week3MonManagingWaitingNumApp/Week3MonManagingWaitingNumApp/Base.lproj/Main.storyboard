@@ -1,24 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Week3MonManagingWaitingNumApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="현재 대기 인원" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ahs-i1-yZ6">
+                                <rect key="frame" x="16" y="45" width="343" height="50.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYN-rb-L1T">
+                                <rect key="frame" x="113" y="105" width="80" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="34"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="명" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TmT-U7-gDh">
+                                <rect key="frame" x="207" y="105" width="30" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="34"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="R0Z-Eg-IEy">
+                                <rect key="frame" x="60" y="250" width="124" height="75"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" subtitle="" cornerStyle="dynamic" titleAlignment="center">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" systemColor="linkColor"/>
+                                    </backgroundConfiguration>
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="대기">
+                                            <attributes>
+                                                <font key="NSFont" size="30" name="AppleSDGothicNeo-Regular"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="plusWaitingNum:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TDL-UD-kic"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="uZt-Cc-HAG">
+                                <rect key="frame" x="186" y="250" width="129" height="75"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" cornerStyle="dynamic">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" systemColor="quaternaryLabelColor"/>
+                                    </backgroundConfiguration>
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="완료">
+                                            <attributes>
+                                                <font key="NSFont" size="28" name="AppleSDGothicNeo-Regular"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="minusWaitingNum:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ueb-NJ-kCd"/>
+                                </connections>
+                            </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="NVP-bo-9cc">
+                                <rect key="frame" x="64.5" y="186" width="246" height="4"/>
+                            </progressView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ahs-i1-yZ6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Elo-tS-8ft"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uZt-Cc-HAG" secondAttribute="trailing" constant="60" id="FQN-qz-nfw"/>
+                            <constraint firstItem="NVP-bo-9cc" firstAttribute="top" secondItem="kYN-rb-L1T" secondAttribute="bottom" constant="40" id="Fhb-we-0IQ"/>
+                            <constraint firstItem="TmT-U7-gDh" firstAttribute="top" secondItem="ahs-i1-yZ6" secondAttribute="bottom" constant="9.5" id="GEl-st-2W7"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="R0Z-Eg-IEy" secondAttribute="bottom" constant="342" id="MLv-37-sY3"/>
+                            <constraint firstItem="R0Z-Eg-IEy" firstAttribute="top" secondItem="kYN-rb-L1T" secondAttribute="bottom" constant="104" id="MVC-M3-dX5"/>
+                            <constraint firstItem="ahs-i1-yZ6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="MwN-HN-f4B"/>
+                            <constraint firstItem="NVP-bo-9cc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="64.5" id="OTm-9S-FYE"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ahs-i1-yZ6" secondAttribute="trailing" constant="16" id="PIC-vt-0V4"/>
+                            <constraint firstItem="uZt-Cc-HAG" firstAttribute="leading" secondItem="R0Z-Eg-IEy" secondAttribute="trailing" constant="2" id="QRn-Ws-btL"/>
+                            <constraint firstItem="ahs-i1-yZ6" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="45" id="RPH-GV-jjP"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NVP-bo-9cc" secondAttribute="trailing" constant="64.5" id="ai6-PH-wcM"/>
+                            <constraint firstItem="uZt-Cc-HAG" firstAttribute="top" secondItem="TmT-U7-gDh" secondAttribute="bottom" constant="104" id="apl-pG-ttH"/>
+                            <constraint firstItem="uZt-Cc-HAG" firstAttribute="leading" secondItem="R0Z-Eg-IEy" secondAttribute="trailing" constant="2" id="dxK-Yl-3I6"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uZt-Cc-HAG" secondAttribute="bottom" constant="342" id="fow-Ca-EHN"/>
+                            <constraint firstItem="R0Z-Eg-IEy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="60" id="hot-xf-fZJ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="TmT-U7-gDh" secondAttribute="trailing" constant="138" id="igV-Rm-999"/>
+                            <constraint firstItem="R0Z-Eg-IEy" firstAttribute="top" secondItem="NVP-bo-9cc" secondAttribute="bottom" constant="60" id="lYS-CP-AYL"/>
+                            <constraint firstItem="TmT-U7-gDh" firstAttribute="leading" secondItem="kYN-rb-L1T" secondAttribute="trailing" constant="14" id="rwt-TK-EhM"/>
+                            <constraint firstItem="kYN-rb-L1T" firstAttribute="top" secondItem="ahs-i1-yZ6" secondAttribute="bottom" constant="9.5" id="vNi-X2-A25"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="completeButton" destination="uZt-Cc-HAG" id="mwo-by-fzl"/>
+                        <outlet property="progressBar" destination="NVP-bo-9cc" id="E50-Km-seJ"/>
+                        <outlet property="waitingButton" destination="R0Z-Eg-IEy" id="LuF-cp-7XD"/>
+                        <outlet property="waitingNumbers" destination="kYN-rb-L1T" id="Is4-ua-WqV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="120.8" y="118.29085457271366"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="quaternaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.17999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
