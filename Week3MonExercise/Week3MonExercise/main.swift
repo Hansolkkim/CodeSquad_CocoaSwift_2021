@@ -16,3 +16,7 @@ otherMatrix.printMatrix(otherMatrix)
 
 myMatrix.printMatrix(myMatrix.sum(with: otherMatrix))
 myMatrix.printMatrix(myMatrix.product(with: otherMatrix))
+
+//연습문제 2 출력
+var myBinary = SpecialBinary(with: 5)
+myBinary.printFound(myBinary.find(by: 4))
