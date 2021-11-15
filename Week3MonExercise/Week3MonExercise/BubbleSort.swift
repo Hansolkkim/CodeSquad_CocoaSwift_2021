@@ -19,32 +19,22 @@ class BubbleSort {
         let length = unsortedArray.count
         var forSortingArray = unsortedArray
         if isAscending {
-            for _ in 0...length-1 {
-                var swapped = false
-                for i in 0...length-2 {
-                    let leftElement = forSortingArray[i], rightElement = forSortingArray[i+1]
+            for i in 0...length-2 {
+                for j in 0...length-2-i {
+                    let leftElement = forSortingArray[j], rightElement = forSortingArray[j+1]
                     if leftElement > rightElement {
-                        swap(aIndex: i, bIndex: i+1)
-                        swapped = true
+                        swap(aIndex: j, bIndex: j+1)
                     }
-                }
-                if swapped == false {
-                    break
                 }
             }
             
         } else {
-            for _ in 0 ... length-1{
-                var swapped = false
-                for i in 0...length-2 {
-                    let leftElement = forSortingArray[i], rightElement = forSortingArray[i+1]
+            for i in 0 ... length-1{
+                for j in 0...length-2-i {
+                    let leftElement = forSortingArray[j], rightElement = forSortingArray[j+1]
                     if leftElement < rightElement {
-                        swap(aIndex: i, bIndex: i+1)
-                        swapped = true
+                        swap(aIndex: j, bIndex: j+1)
                     }
-                }
-                if swapped == false {
-                    break
                 }
             }
             
