@@ -29,7 +29,7 @@ class BubbleSort {
             }
             
         } else {
-            for i in 0 ... length-1{
+            for i in 0 ... length-2 {
                 for j in 0...length-2-i {
                     let leftElement = forSortingArray[j], rightElement = forSortingArray[j+1]
                     if leftElement < rightElement {

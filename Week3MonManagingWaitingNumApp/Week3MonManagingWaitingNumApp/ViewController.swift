@@ -21,6 +21,7 @@ class ViewController: UIViewController {
         progressBar.progressViewStyle = .default
         progressBar.progressTintColor = .systemBlue
         progressBar.progress = 0
+        completeButton.isEnabled = false
        
     }
     @IBAction func plusWaitingNum(_ sender: Any) {
