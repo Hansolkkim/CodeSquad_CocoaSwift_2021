@@ -7,5 +7,15 @@
 
 import Foundation
 
-print("Hello, World!")
+var myList = LinkedArray()
+var someValue = 2
+while myList.A.contains(0) {
+    myList.append(someValue)
+    someValue += 1
+}
 
+print(myList.A)
+myList.enumerateList(myList.A)
+
+print(myList.countOfList(myList.A))
+print(myList.isFullList(myList.A))
