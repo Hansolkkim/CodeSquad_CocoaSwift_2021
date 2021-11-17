@@ -9,6 +9,5 @@ import Foundation
 
 var myBracketPair = PairingBracket(with: .round)
 
-print(myBracketPair.generate(with: 2))
-
+print(myBracketPair.generate(with:3))
 print(myBracketPair.analyze(with: "((()))"))

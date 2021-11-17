@@ -35,16 +35,7 @@ struct PairingBracket {
             return String(repeating: String(openBracket), count: count) + String(repeating: String(closingBracket), count: count)
         }
     }
-    //    mutating func calculateNumberOfBracketPair(_ count: Int) -> Int{
-    //        if count == 0 {
-    //            return 1
-    //        }
-    //
-    //        for i in 0...count-1 {
-    //            self.sum += calculateNumberOfBracketPair(count-1-i) * calculateNumberOfBracketPair(i)
-    //        }
-    //        return self.sum
-    //    }
+    
     func swap(_ a: Int, _ b: Int, _ Str: String) -> String {
         var str = Str.map{String($0)}
         let tmp = str[a]
@@ -59,7 +50,9 @@ struct PairingBracket {
         var result = [String]()
         func permutation(_ a: String, _ n: Int) {
             if n == 0 {
-                self.wholeBracketArray.append(a)
+                if self.wholeBracketArray.contains(a) == false {
+                    self.wholeBracketArray.append(a)
+                }
             } else {
                 var a = a
                 permutation(a, n-1)
@@ -70,7 +63,7 @@ struct PairingBracket {
                 }
             }
         }
-        permutation(self.bracketArray, count)
+        permutation(self.bracketArray, 2*count-1)
         var wholeBracketArray = self.wholeBracketArray
         
         for i in 0..<wholeBracketArray.count {
