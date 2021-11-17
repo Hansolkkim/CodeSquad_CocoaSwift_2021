@@ -7,5 +7,8 @@
 
 import Foundation
 
-print("Hello, World!")
+var myBracketPair = PairingBracket(with: .round)
 
+print(myBracketPair.generate(with: 2))
+
+print(myBracketPair.analyze(with: "((()))"))
