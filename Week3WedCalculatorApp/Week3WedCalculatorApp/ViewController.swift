@@ -21,11 +21,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         calResultLabel.text = "0"
-//        stack1.text = "stack1"
-//        stack2.text = "stack2"
-//        stack3.text = "stack3"
-//        stack4.text = "stack4"
-//        stack5.text = "stack5"
         
     }
     @IBAction func pressNumberButton(_ sender: UIButton) {
@@ -75,27 +70,6 @@ class ViewController: UIViewController {
                     stackPointer += 1
                 } else {print("stack에 최대 5개의 값만 저장할 수 있습니다..")}
             }
-        case "x" :
-            stacks.append(inputVal)
-            if prevOperator.isEmpty {
-                prevOperator.append("*")
-                reloadStacks(stacks)
-            } else {
-                prevOperator.append("*")
-                (stacks, prevOperator) = cal(stacks, prevOperator)
-                reloadStacks(stacks)
-            }
-            
-        case "÷" :
-            stacks.append(inputVal)
-            if prevOperator.isEmpty {
-                prevOperator.append("/")
-                reloadStacks(stacks)
-            } else {
-                prevOperator.append("/")
-                (stacks, prevOperator) = cal(stacks, prevOperator)
-                reloadStacks(stacks)
-            }
         default :
             stacks.append(inputVal)
             if prevOperator.isEmpty {
@@ -122,10 +96,10 @@ class ViewController: UIViewController {
         case "-":
             stacks[stackPointer] =
                 stacks[stackPointer] - stacks.removeLast()
-        case "/":
+        case "÷":
             stacks[stackPointer] =
                 stacks[stackPointer] / stacks.removeLast()
-        case "*":
+        case "x":
             stacks[stackPointer] =
                 stacks[stackPointer] * stacks.removeLast()
         default: stacks[stackPointer] = stacks[stackPointer]

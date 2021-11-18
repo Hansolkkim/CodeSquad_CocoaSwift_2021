@@ -89,7 +89,7 @@ struct PairingBracket {
             let digit = String(value.removeFirst())
             if stack.isEmpty {
                 stack.append(digit)
-            } else if stack.last! == openBracket && digit == closingBracket {
+            } else if (stack.last! == "(" || stack.last! == "{" || stack.last! == "[") && (digit == ")" || digit == "}" || digit == "]") {
                 stack.removeLast()
             } else { stack.append(digit) }
         }
