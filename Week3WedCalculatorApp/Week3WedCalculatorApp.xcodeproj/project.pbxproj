@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0232B2E42746678200D8215F /* customBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0232B2E32746678100D8215F /* customBtn.swift */; };
 		0259B9EC27453D8C00ADF040 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259B9EB27453D8C00ADF040 /* AppDelegate.swift */; };
 		0259B9EE27453D8C00ADF040 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259B9ED27453D8C00ADF040 /* SceneDelegate.swift */; };
 		0259B9F027453D8C00ADF040 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259B9EF27453D8C00ADF040 /* ViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0232B2E32746678100D8215F /* customBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customBtn.swift; sourceTree = "<group>"; };
 		0259B9E827453D8C00ADF040 /* Week3WedCalculatorApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Week3WedCalculatorApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0259B9EB27453D8C00ADF040 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0259B9ED27453D8C00ADF040 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				0259B9EB27453D8C00ADF040 /* AppDelegate.swift */,
 				0259B9ED27453D8C00ADF040 /* SceneDelegate.swift */,
 				0259B9EF27453D8C00ADF040 /* ViewController.swift */,
+				0232B2E32746678100D8215F /* customBtn.swift */,
 				0259B9F127453D8C00ADF040 /* Main.storyboard */,
 				0259B9F427453D8F00ADF040 /* Assets.xcassets */,
 				0259B9F627453D8F00ADF040 /* LaunchScreen.storyboard */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0259B9F027453D8C00ADF040 /* ViewController.swift in Sources */,
+				0232B2E42746678200D8215F /* customBtn.swift in Sources */,
 				0259B9EC27453D8C00ADF040 /* AppDelegate.swift in Sources */,
 				0259B9EE27453D8C00ADF040 /* SceneDelegate.swift in Sources */,
 			);
