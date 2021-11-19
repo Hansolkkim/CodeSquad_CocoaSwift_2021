@@ -34,7 +34,7 @@ myValidator.printSocialNumValidator(input: myValidator.socialNumValidator(social
 
 //연습문제5 출력
 let myAntPuzzle = antPuzzle()
-print(myAntPuzzle.antFunction(inputArray: [1, 1]))
+print(myAntPuzzle.antFunction(inputArray: [1, 2, 2, 1, 1, 1]))
 
 //연습문제7 출력
 let myDictionary = usingDictionary()

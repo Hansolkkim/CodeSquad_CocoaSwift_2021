@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var compileButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        let wordArray = wordArray.shuffled()
         compileButton.setTitle("확인", for: .normal)
         currentWord.text = wordArray[0]
         nextWord.text = wordArray[1]
@@ -47,6 +48,7 @@ class ViewController: UIViewController {
                 self.present(alert, animated: true)
             }
         } else {
+            typedWord.text = ""
             currentWord.textColor = UIColor.red
         }
         
