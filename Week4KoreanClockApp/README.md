@@ -4,4 +4,4 @@
 * ☀️/🌙로 낮과 저녁을 구분 -> 마찬가지로 Calendar로 불러온 시간으로 7~19시는 ☀️/ 그 외는 🌙로 출력
 * 초 second 정보는 윗줄, 아랫줄로 구분해, 윗 줄에는 10의 자리 아랫 줄에는 1의 자리 초를 출력하도록 함.
 
-<img src="https://ifh.cc/g/9jEZ66.gif" align="left" style ="zoom:150%">
+<img src="https://ifh.cc/g/MvYpZR.gif" align="left">
