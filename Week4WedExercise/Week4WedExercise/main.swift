@@ -19,3 +19,14 @@ print(isExist(filename: existFileName, at: myPath))
 print(isExist(filename: notExistFileName, at: myPath))
 
 print(filesWithSuffix(suffix: ".plist", at: myPath))
+
+
+let myCSVfile = try String(contentsOfFile: "/Users/hansolkim/CodeSquad_CocoaSwift_2021/Week4WedExercise/Week4WedExercise/sample.csv")
+
+let myCSV = CSV(myCSVfile)
+myCSV.add(name: "sol", email: "hskim6521@naver.com", language: "swift", grade: 4)
+print(myCSV.findBy(name: "sol"))
+myCSV.removeBy(email: "hskim6521@naver.com")
+myCSV.removeBy(email: "JK@naver.com")
+
+print(myCSV.write(to: "sample1.csv"))
