@@ -69,8 +69,8 @@ class CSV {
         } else {
             do {
                 var csvString = "name, email, language, grade \n"
-                for dct in personalInfo {
-                    csvString.append("\(dct["name"]!), \(dct["email"]!), \(dct["language"]!), \(dct["grade"]!)\n ")
+                personalInfo.forEach{
+                    csvString.append("\($0["name"]!), \($0["email"]!), \($0["language"]!), \($0["grade"]!)\n ")
                 }
                 let fileManager = FileManager.default
                 let path = try fileManager.url(for: .documentDirectory, in: .allDomainsMask, appropriateFor: nil, create: false)

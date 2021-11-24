@@ -30,3 +30,9 @@ myCSV.removeBy(email: "hskim6521@naver.com")
 myCSV.removeBy(email: "JK@naver.com")
 
 print(myCSV.write(to: "sample1.csv"))
+
+let bookStr = try! String(contentsOfFile: "/Users/hansolkim/CodeSquad_CocoaSwift_2021/Week4WedExercise/Week4WedExercise/bookfile.txt")
+
+var myThread = BackgroundWork()
+myThread.doTimeConsumingOperation(bookStr)
+RunLoop.current.run()
