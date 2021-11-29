@@ -24,11 +24,12 @@ struct YutPlay {
                                 ["⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️"]]
     var firstPlayerCurrentPosition = [Position(y:-1,x:-1)]
     var secondPlayerCurrentPosition = [Position(y:-1,x:-1)]
-    var isFirstPlayerGallIn:[Bool] = []
-    var isSecondPlayerGallIn:[Bool] = []
+    var isFirstPlayerGallIn:[Bool] = [false]
+    var isSecondPlayerGallIn:[Bool] = [false]
     var firstPlayerMal: String = "🟤"
     var secondPlayerMal: String = "🟤"
     var whosFirst: Int = 0
+    var whosLast: Int = 0
     
     init() {
         print("윷놀이 게임 시작!")
@@ -103,13 +104,8 @@ struct YutPlay {
                 yutBoard[firstPlayerCurrentPosition[0].y][firstPlayerCurrentPosition[0].x] = firstPlayerMal
                 printYutBoard(yutBoard)
             }
-            self.secondPlayerCurrentPosition[0] = throwYut(mal: secondPlayerCurrentPosition[0], player: 2)
-            if secondPlayerCurrentPosition[0].x == -1 && secondPlayerCurrentPosition[0].y == -1 {
-                print("출발하지 않았기 때문에 무효")
-            } else {
-                yutBoard[secondPlayerCurrentPosition[0].y][secondPlayerCurrentPosition[0].x] = secondPlayerMal
-                printYutBoard(yutBoard)
-            }
+            whosLast = 1
+
         } else {
             var yutBoard = self.yutBoard
             self.secondPlayerCurrentPosition[0] = throwYut(mal: secondPlayerCurrentPosition[0], player: 2)
@@ -119,25 +115,94 @@ struct YutPlay {
                 yutBoard[secondPlayerCurrentPosition[0].y][secondPlayerCurrentPosition[0].x] = secondPlayerMal
                 printYutBoard(yutBoard)
             }
-            self.firstPlayerCurrentPosition[0] = throwYut(mal: firstPlayerCurrentPosition[0], player: 1)
-            if firstPlayerCurrentPosition[0].x == -1 && firstPlayerCurrentPosition[0].y == -1 {
-                print("출발하지 않았기 때문에 무효")
-            } else {
-                yutBoard[firstPlayerCurrentPosition[0].y][firstPlayerCurrentPosition[0].x] = firstPlayerMal
-                printYutBoard(yutBoard)
-            }
-            
+            whosLast = 2
+//            self.firstPlayerCurrentPosition[0] = throwYut(mal: firstPlayerCurrentPosition[0], player: 1)
+//            if firstPlayerCurrentPosition[0].x == -1 && firstPlayerCurrentPosition[0].y == -1 {
+//                print("출발하지 않았기 때문에 무효")
+//            } else {
+//                yutBoard[firstPlayerCurrentPosition[0].y][firstPlayerCurrentPosition[0].x] = firstPlayerMal
+//                printYutBoard(yutBoard)
+//            }
+//            whosLast = 1
         }
         
-//        while (isFirstPlayerGallIn[0] == true) || (isSecondPlayerGallIn[0] == true) {
-//
-//        }
+        while (isFirstPlayerGallIn[0] == false) || (isSecondPlayerGallIn[0] == false) {
+            switch whosLast {
+            case 1: //마지막으로 윷 던진 사람이 1일 경우
+                var yutBoard = self.yutBoard
+                if firstPlayerCurrentPosition[0].x == secondPlayerCurrentPosition[0].x && firstPlayerCurrentPosition[0].y == secondPlayerCurrentPosition[0].y && firstPlayerCurrentPosition[0].x != -1 && secondPlayerCurrentPosition[0].x != -1{ // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
+                    self.secondPlayerCurrentPosition[0].x = -1; self.secondPlayerCurrentPosition[0].y = -1
+                    print("1P가 2P의 말을 잡았으므로, 1P가 다시 윷을 던집니다.")
+                    self.firstPlayerCurrentPosition[0] = throwYut(mal: firstPlayerCurrentPosition[0], player: 1)
+                    if isFirstPlayerGallIn[0] == true {
+                        print("Player 1의 승리입니다!")
+                        break
+                    } else {
+                        yutBoard[firstPlayerCurrentPosition[0].y][firstPlayerCurrentPosition[0].x] = firstPlayerMal
+                        printYutBoard(yutBoard)
+                    }
+                    whosLast = 1
+                    continue
+                } else { // 안잡았을 때 -> 2P 먼저 시작
+                    yutBoard[firstPlayerCurrentPosition[0].y][firstPlayerCurrentPosition[0].x] = firstPlayerMal
+                    self.secondPlayerCurrentPosition[0] = throwYut(mal: secondPlayerCurrentPosition[0], player: 2)
+                    if secondPlayerCurrentPosition[0].x == -1 { //출발 안했는데 빽도가 나온 경우
+                        print("출발하지 않았기 때문에 무효")
+                        printYutBoard(yutBoard)
+                    } else {
+                        if isSecondPlayerGallIn[0] == true {
+                            print("Player 2의 승리입니다!")
+                            break
+                        } else {
+                            yutBoard[secondPlayerCurrentPosition[0].y][secondPlayerCurrentPosition[0].x] = secondPlayerMal
+                            printYutBoard(yutBoard)
+                        }
+                    }
+                    whosLast = 2
+                    continue
+                }
+            case 2: //마지막으로 윷 던진 사람이 2일 경우
+                var yutBoard = self.yutBoard
+                if firstPlayerCurrentPosition[0].x == secondPlayerCurrentPosition[0].x && firstPlayerCurrentPosition[0].y == secondPlayerCurrentPosition[0].y && firstPlayerCurrentPosition[0].x != -1 && secondPlayerCurrentPosition[0].x != -1{ // 2P가 1P의 말을 잡았을 때 -> 2P 먼저 시작
+                    firstPlayerCurrentPosition[0].x = -1; firstPlayerCurrentPosition[0].y = -1
+                    print("2P가 1P의 말을 잡았으므로, 2P가 다시 윷을 던집니다.")
+                    self.secondPlayerCurrentPosition[0] = throwYut(mal: secondPlayerCurrentPosition[0], player: 2)
+                    if isSecondPlayerGallIn[0] == true {
+                        print("Player 2의 승리입니다!")
+                        break
+                    } else {
+                        yutBoard[secondPlayerCurrentPosition[0].y][secondPlayerCurrentPosition[0].x] = secondPlayerMal
+                        printYutBoard(yutBoard)
+                    }
+                    whosLast = 2
+                    continue
+                } else { // 안잡았을 때 -> 1P 먼저 시작
+                    yutBoard[secondPlayerCurrentPosition[0].y][secondPlayerCurrentPosition[0].x] = secondPlayerMal
+                    self.firstPlayerCurrentPosition[0] = throwYut(mal: firstPlayerCurrentPosition[0], player: 1)
+                    if firstPlayerCurrentPosition[0].x == -1 {
+                        print("출발하지 않았기 때문에 무효")
+                        printYutBoard(yutBoard)
+                    } else {
+                        if isFirstPlayerGallIn[0] == true {
+                            print("Player 1의 승리입니다!")
+                            break
+                        } else {
+                            yutBoard[firstPlayerCurrentPosition[0].y][firstPlayerCurrentPosition[0].x] = firstPlayerMal
+                            printYutBoard(yutBoard)
+                        }
+                    }
+                    whosLast = 1
+                    continue
+                }
+            default: continue
+            }
+        }
     }
     mutating func throwYut(mal: Position, player: Int) -> Position{ //윷을 던지는 메소드
         var mal = mal
         var wantThrow = "N"
-        while wantThrow == "N" {
-            print("윷을 던지시겠습니까? (Y/N)", terminator: "")
+        while wantThrow != "Y" {
+            print("\(player)P의 윷을 던지시겠습니까? (Y/N) ", terminator: "")
             if let typed = readLine() {
                 wantThrow = typed
             }
@@ -212,6 +277,7 @@ struct YutPlay {
         if position.x == -1 && position.y == -1 {return true}
         return false
     }
+    
     private mutating func moveMal(from origin: Position, by moveto: Int, player: Int) -> Position {
         let currentPosition = origin
         switch moveto {
@@ -229,34 +295,43 @@ struct YutPlay {
             } else if isRight(position: currentPosition) {
                 return Position(y: currentPosition.y+2, x: currentPosition.x)
             } else if isTop(position: currentPosition) {
-                return Position( y: currentPosition.y, x: currentPosition.x+2)
+                return Position( y: currentPosition.y, x: currentPosition.x+3)
             } else if isLeft(position: currentPosition) {
                 return Position(y: currentPosition.y-2, x: currentPosition.x)
             } else if isBottom(position: currentPosition) {
-                return Position(y: currentPosition.y, x: currentPosition.x-2)
+                return Position(y: currentPosition.y, x: currentPosition.x-3)
             }
             
         default:
             if isNotStarted(position: currentPosition) {
                 if player == 1{
-                    self.isFirstPlayerGallIn.append(false)
+                    self.isFirstPlayerGallIn[0] = false
                 } else {
-                    self.isSecondPlayerGallIn.append(false)
+                    self.isSecondPlayerGallIn[0] = false
                 }
                 return Position(y: 10 - 2*moveto, x: 15)
-            } else if isRight(position: currentPosition){
+            } else if isStartingPoint(position: currentPosition){
+                
+                if player == 1{
+                    self.isFirstPlayerGallIn[0] = true
+                } else {
+                    self.isSecondPlayerGallIn[0] = true
+                }
+                return Position(y: 100, x: 100)
+            }
+            else if isRight(position: currentPosition){
                 let movedPositionY = currentPosition.y - 2*moveto
                 switch movedPositionY {
                 case ..<0:
-                    return Position(y: currentPosition.y, x:currentPosition.x - 2*moveto)
+                    return Position(y: 0, x:currentPosition.x - 3*(moveto-currentPosition.y/2))
                 default:
                     return Position(y: movedPositionY, x:currentPosition.x)
                 }
             } else if isTop(position: currentPosition) {
-                let movedPositionX = currentPosition.x - 2*moveto
+                let movedPositionX = currentPosition.x - 3*moveto
                 switch movedPositionX {
                 case ..<0:
-                    return Position(y: currentPosition.y + 2*moveto, x:currentPosition.x)
+                    return Position(y: currentPosition.y + 2*(moveto-currentPosition.x/2), x:0)
                 default:
                     return Position(y: currentPosition.y, x:movedPositionX)
                 }
@@ -264,12 +339,12 @@ struct YutPlay {
                 let movedPositionY = currentPosition.y + 2*moveto
                 switch movedPositionY {
                 case 11...:
-                    return Position(y: currentPosition.y, x:currentPosition.x + 2*moveto)
+                    return Position(y: 10, x:currentPosition.x + 3*(moveto-(10-currentPosition.y)/2))
                 default:
                     return Position(y: movedPositionY, x:currentPosition.x)
                 }
             } else if isBottom(position: currentPosition) {
-                let movedPositionX = currentPosition.x + 2*moveto
+                let movedPositionX = currentPosition.x + 3*moveto
                 switch movedPositionX {
                 case 16...:
                     if player == 1{
@@ -277,138 +352,14 @@ struct YutPlay {
                     } else {
                         self.isSecondPlayerGallIn[0] = true
                     }
+                    return Position(y: 100, x: 100)
                 default:
-                    return Position(y: currentPosition.y + 2*moveto, x: movedPositionX)
+                    return Position(y: currentPosition.y, x: movedPositionX)
                 }
             }
         }
         return Position(y: 0, x: 0)
     }
-    private func printYut(_ a: Int,_ b: Int,_ c: Int,_ d: Int) { //나온 윷 모양을 출력하는 메소드
-        switch (a,b,c,d) {
-        case (1,0,0,0):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪  ⎪⎪x ⎪⎪x ⎪⎪x ⎪")
-            print("⎪  ⎪⎪x ⎪⎪x ⎪⎪x ⎪")
-            print("⎪  ⎪⎪x ⎪⎪x ⎪⎪x ⎪")
-            print("⎪  ⎪⎪x ⎪⎪x ⎪⎪x ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (0,1,0,0):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪x ⎪⎪  ⎪⎪x ⎪⎪x ⎪")
-            print("⎪x ⎪⎪  ⎪⎪x ⎪⎪x ⎪")
-            print("⎪x ⎪⎪  ⎪⎪x ⎪⎪x ⎪")
-            print("⎪x ⎪⎪  ⎪⎪x ⎪⎪x ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (0,0,1,0):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪x ⎪⎪x ⎪⎪  ⎪⎪x ⎪")
-            print("⎪x ⎪⎪x ⎪⎪  ⎪⎪x ⎪")
-            print("⎪x ⎪⎪x ⎪⎪  ⎪⎪x ⎪")
-            print("⎪x ⎪⎪x ⎪⎪  ⎪⎪x ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (0,0,0,1):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪x ⎪⎪x ⎪⎪x ⎪⎪b ⎪")
-            print("⎪x ⎪⎪x ⎪⎪x ⎪⎪a ⎪")
-            print("⎪x ⎪⎪x ⎪⎪x ⎪⎪c ⎪")
-            print("⎪x ⎪⎪x ⎪⎪x ⎪⎪k ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (1,1,0,0):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪  ⎪⎪  ⎪⎪x ⎪⎪x ⎪")
-            print("⎪  ⎪⎪  ⎪⎪x ⎪⎪x ⎪")
-            print("⎪  ⎪⎪  ⎪⎪x ⎪⎪x ⎪")
-            print("⎪  ⎪⎪  ⎪⎪x ⎪⎪x ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (1,0,1,0):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪  ⎪⎪x ⎪⎪  ⎪⎪x ⎪")
-            print("⎪  ⎪⎪x ⎪⎪  ⎪⎪x ⎪")
-            print("⎪  ⎪⎪x ⎪⎪  ⎪⎪x ⎪")
-            print("⎪  ⎪⎪x ⎪⎪  ⎪⎪x ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (1,0,0,1):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪  ⎪⎪x ⎪⎪x ⎪⎪  ⎪")
-            print("⎪  ⎪⎪x ⎪⎪x ⎪⎪  ⎪")
-            print("⎪  ⎪⎪x ⎪⎪x ⎪⎪  ⎪")
-            print("⎪  ⎪⎪x ⎪⎪x ⎪⎪  ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (0,1,1,0):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪x ⎪⎪  ⎪⎪  ⎪⎪x ⎪")
-            print("⎪x ⎪⎪  ⎪⎪  ⎪⎪x ⎪")
-            print("⎪x ⎪⎪  ⎪⎪  ⎪⎪x ⎪")
-            print("⎪x ⎪⎪  ⎪⎪  ⎪⎪x ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (0,1,0,1):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪x ⎪⎪  ⎪⎪x ⎪⎪  ⎪")
-            print("⎪x ⎪⎪  ⎪⎪x ⎪⎪  ⎪")
-            print("⎪x ⎪⎪  ⎪⎪x ⎪⎪  ⎪")
-            print("⎪x ⎪⎪  ⎪⎪x ⎪⎪  ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (0,0,1,1):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪x ⎪⎪x ⎪⎪  ⎪⎪  ⎪")
-            print("⎪x ⎪⎪x ⎪⎪  ⎪⎪  ⎪")
-            print("⎪x ⎪⎪x ⎪⎪  ⎪⎪  ⎪")
-            print("⎪x ⎪⎪x ⎪⎪  ⎪⎪  ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (1,1,1,0):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪  ⎪⎪  ⎪⎪  ⎪⎪x ⎪")
-            print("⎪  ⎪⎪  ⎪⎪  ⎪⎪x ⎪")
-            print("⎪  ⎪⎪  ⎪⎪  ⎪⎪x ⎪")
-            print("⎪  ⎪⎪  ⎪⎪  ⎪⎪x ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (1,1,0,1):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪  ⎪⎪  ⎪⎪x ⎪⎪  ⎪")
-            print("⎪  ⎪⎪  ⎪⎪x ⎪⎪  ⎪")
-            print("⎪  ⎪⎪  ⎪⎪x ⎪⎪  ⎪")
-            print("⎪  ⎪⎪  ⎪⎪x ⎪⎪  ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (1,0,1,1):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪  ⎪⎪x ⎪⎪  ⎪⎪  ⎪")
-            print("⎪  ⎪⎪x ⎪⎪  ⎪⎪  ⎪")
-            print("⎪  ⎪⎪x ⎪⎪  ⎪⎪  ⎪")
-            print("⎪  ⎪⎪x ⎪⎪  ⎪⎪  ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (0,1,1,1):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪x ⎪⎪  ⎪⎪  ⎪⎪  ⎪")
-            print("⎪x ⎪⎪  ⎪⎪  ⎪⎪  ⎪")
-            print("⎪x ⎪⎪  ⎪⎪  ⎪⎪  ⎪")
-            print("⎪x ⎪⎪  ⎪⎪  ⎪⎪  ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (1,1,1,1):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪  ⎪⎪  ⎪⎪  ⎪⎪  ⎪")
-            print("⎪  ⎪⎪  ⎪⎪  ⎪⎪  ⎪")
-            print("⎪  ⎪⎪  ⎪⎪  ⎪⎪  ⎪")
-            print("⎪  ⎪⎪  ⎪⎪  ⎪⎪  ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        case (0,0,0,0):
-            print("⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫⎧‾‾⎫")
-            print("⎪x ⎪⎪x ⎪⎪x ⎪⎪x ⎪")
-            print("⎪x ⎪⎪x ⎪⎪x ⎪⎪x ⎪")
-            print("⎪x ⎪⎪x ⎪⎪x ⎪⎪x ⎪")
-            print("⎪x ⎪⎪x ⎪⎪x ⎪⎪x ⎪")
-            print("⎩__⎭⎩__⎭⎩__⎭⎩__⎭")
-        default: return
-        }
-    }
     
-    private func printYutBoard(_ currentYutBoard: [[String]]) {
-        for i in 0..<currentYutBoard.count {
-            for j in 0..<currentYutBoard[0].count {
-                print(currentYutBoard[i][j], terminator: "")
-            }
-            print("")
-        }
-    }
 }
 
