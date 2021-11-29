@@ -7,5 +7,7 @@
 
 import Foundation
 
-print("Hello, World!")
+var yutPlayInstance = YutPlay()
+
+yutPlayInstance.startGame()
 
