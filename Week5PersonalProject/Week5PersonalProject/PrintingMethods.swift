@@ -127,9 +127,11 @@ func printYut(_ a: Int,_ b: Int,_ c: Int,_ d: Int) { //나온 윷 모양을 출�
 
 func printYutBoard(_ currentYutBoard: [[String]]) {
     for i in 0..<currentYutBoard.count {
+        print("                                             ",terminator: "")
         for j in 0..<currentYutBoard[0].count {
             print(currentYutBoard[i][j], terminator: "")
         }
         print("")
     }
+    print("")
 }
