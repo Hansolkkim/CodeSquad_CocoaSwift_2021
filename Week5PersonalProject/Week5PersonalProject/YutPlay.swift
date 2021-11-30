@@ -241,7 +241,7 @@ struct YutPlay {
                     let currentMove = throwYut(player: 2)
                     var currentMal = 0
                     for malNumber in 0..<playerCurrentPosition[1-1].count {
-                        if playerCurrentPosition[1-1][malNumber].x != -1 {
+                        if playerCurrentPosition[1-1][malNumber].x != -1 && playerCurrentPosition[1-1][malNumber].x != 100{
                             yutBoard[playerCurrentPosition[1-1][malNumber].y][playerCurrentPosition[1-1][malNumber].x] = playerMalColor[1-1]
                         }
                     }
@@ -334,7 +334,7 @@ struct YutPlay {
 //                    self.playerCurrentPosition[1-1][captured1PIndex!].y = -1
 //                    isPlayerGallin[1-1].remove(at: captured1PIndex!)
                     for malNumber in 0..<playerCurrentPosition[1-1].count {
-                        if playerCurrentPosition[1-1][malNumber].x != -1 {
+                        if playerCurrentPosition[1-1][malNumber].x != -1 && playerCurrentPosition[1-1][malNumber].x != 100 {
                             yutBoard[playerCurrentPosition[1-1][malNumber].y][playerCurrentPosition[1-1][malNumber].x] = playerMalColor[1-1]
                         }
                     }
@@ -424,7 +424,7 @@ struct YutPlay {
                     let currentMove = throwYut(player: 1)
                     var currentMal = 0
                     for malNumber in 0..<playerCurrentPosition[2-1].count {
-                        if playerCurrentPosition[2-1][malNumber].x != -1 {
+                        if playerCurrentPosition[2-1][malNumber].x != -1 && playerCurrentPosition[2-1][malNumber].x != 100{
                             yutBoard[playerCurrentPosition[2-1][malNumber].y][playerCurrentPosition[2-1][malNumber].x] = playerMalColor[2-1]
                         }
                     }
