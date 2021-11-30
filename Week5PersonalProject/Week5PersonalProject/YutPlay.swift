@@ -107,13 +107,16 @@ struct YutPlay {
         var yutBoard = self.yutBoard // YutPlay struct의 yutBoard 프로퍼티는 아무런 말이 놓여지지 않은 상태로 유지해야하므로, 복사해서 사용
 //        isPlayerGallin[whosFirst-1].append(false)
         var currentMove = throwYut(player: whosFirst)
-        self.playerCurrentPosition[whosFirst-1][0] =
-        moveMal(from: playerCurrentPosition[whosFirst-1][0], by: currentMove, player: whosFirst, targetMal: 0)
         if currentMove == -1 { //처음 던질 때부터 빽도가 나올 경우 이 Position을 yutboard에 입력해주면 index error가 발생하므로, 이 경우를 해결해주기 위한 코드
             print("출발하지 않았기 때문에 무효")
+            playerCurrentPosition[whosFirst-1].remove(at: 0)
         } else {
+            self.playerCurrentPosition[whosFirst-1][0] =
+            moveMal(from: playerCurrentPosition[whosFirst-1][0], by: currentMove, player: whosFirst, targetMal: 0)
             for i in 0..<playerCurrentPosition[whosFirst-1].count {
-                yutBoard[playerCurrentPosition[whosFirst-1][i].y][playerCurrentPosition[whosFirst-1][i].x] = playerMalColor[whosFirst-1]
+                if playerCurrentPosition[whosFirst-1][i].x != -1 {
+                    yutBoard[playerCurrentPosition[whosFirst-1][i].y][playerCurrentPosition[whosFirst-1][i].x] = playerMalColor[whosFirst-1]
+                }
             }
             
             printYutBoard(yutBoard)
@@ -121,15 +124,16 @@ struct YutPlay {
         whosLast = whosFirst
         if whosFirst == 1 { whosFirst = 2 }
         else {whosFirst = 1}
-//        isPlayerGallin[whosFirst-1].append(false)
         currentMove = throwYut(player: whosFirst)
         if currentMove == -1{
-//            isPlayerGallin[whosFirst-1].removeAll()
+            playerCurrentPosition[whosFirst-1].remove(at: 0)
             print("출발하지 않았기 때문에 무효")
         } else {
             self.playerCurrentPosition[whosFirst-1][0] = moveMal(from: playerCurrentPosition[whosFirst-1][0], by: currentMove, player: whosFirst, targetMal: 0)
             for i in 0..<playerCurrentPosition[whosFirst-1].count {
-                yutBoard[playerCurrentPosition[whosFirst-1][i].y][playerCurrentPosition[whosFirst-1][i].x] = playerMalColor[whosFirst-1]
+                if playerCurrentPosition[whosFirst-1][i].x != -1 {
+                    yutBoard[playerCurrentPosition[whosFirst-1][i].y][playerCurrentPosition[whosFirst-1][i].x] = playerMalColor[whosFirst-1]
+                }
             }
             printYutBoard(yutBoard)
         }
@@ -145,7 +149,7 @@ struct YutPlay {
 //                    self.playerCurrentPosition[2-1][captured2PIndex!].y = -1
 //                    isPlayerGallin[2-1].remove(at: captured2PIndex!)
                     for malNumber in 0..<playerCurrentPosition[2-1].count {
-                        if playerCurrentPosition[2-1][malNumber].x != -1 {
+                        if playerCurrentPosition[2-1][malNumber].x != -1 && playerCurrentPosition[2-1][malNumber].x != 100{
                             yutBoard[playerCurrentPosition[2-1][malNumber].y][playerCurrentPosition[2-1][malNumber].x] = playerMalColor[2-1]
                         }
                     }
@@ -224,7 +228,7 @@ struct YutPlay {
                                 }
                             }
                             for malNumber in 0..<playerCurrentPosition[1-1].count {
-                                if playerCurrentPosition[1-1][malNumber].x != -1 {
+                                if playerCurrentPosition[1-1][malNumber].x != -1 && playerCurrentPosition[1-1][malNumber].x != 100{
                                     yutBoard[playerCurrentPosition[1-1][malNumber].y][playerCurrentPosition[1-1][malNumber].x] = playerMalColor[1-1]
                                 }
                             }
@@ -311,7 +315,7 @@ struct YutPlay {
                                 }
                             }
                             for malNumber in 0..<playerCurrentPosition[2-1].count {
-                                if playerCurrentPosition[2-1][malNumber].x != -1 {
+                                if playerCurrentPosition[2-1][malNumber].x != -1  && playerCurrentPosition[2-1][malNumber].x != 100{
                                     yutBoard[playerCurrentPosition[2-1][malNumber].y][playerCurrentPosition[2-1][malNumber].x] = playerMalColor[2-1]
                                 }
                             }
@@ -406,7 +410,7 @@ struct YutPlay {
                                 }
                             }
                             for malNumber in 0..<playerCurrentPosition[2-1].count {
-                                if playerCurrentPosition[2-1][malNumber].x != -1 {
+                                if playerCurrentPosition[2-1][malNumber].x != -1 && playerCurrentPosition[2-1][malNumber].x != 100{
                                     yutBoard[playerCurrentPosition[2-1][malNumber].y][playerCurrentPosition[2-1][malNumber].x] = playerMalColor[2-1]
                                 }
                             }
@@ -494,7 +498,7 @@ struct YutPlay {
                                 }
                             }
                             for malNumber in 0..<playerCurrentPosition[1-1].count {
-                                if playerCurrentPosition[1-1][malNumber].x != -1 {
+                                if playerCurrentPosition[1-1][malNumber].x != -1 && playerCurrentPosition[1-1][malNumber].x != 100{
                                     yutBoard[playerCurrentPosition[1-1][malNumber].y][playerCurrentPosition[1-1][malNumber].x] = playerMalColor[1-1]
                                 }
                             }
