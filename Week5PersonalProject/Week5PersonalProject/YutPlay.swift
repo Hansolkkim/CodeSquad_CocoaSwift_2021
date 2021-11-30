@@ -9,14 +9,7 @@ import Foundation
 struct Position { //말의 위치를 나타내기 위한 struct
     var (y,x) : (Int,Int)
 }
-enum 도개걸윷모 : Int {
-    case 빽도 = -1
-    case 도 = 1
-    case 개 = 2
-    case 걸 = 3
-    case 윷 = 4
-    case 모 = 5
-}
+
 struct YutPlay {
     let yutBoard:[[String]] =  [["⚪️","  ","  ","⚪️","  ","  ","⚪️","  ","  ","⚪️","  ","  ","⚪️","  ","  ","⚪️"],
                                 ["  ","ﾠ  ","  ","  ","  ","ﾠ  ","  ","ﾠ  ","  ","  ","  ","  ","  ","  ","  ","  "],
@@ -170,7 +163,7 @@ struct YutPlay {
                     } else {
                         if isSecondPlayerGallIn[0] == true {
                             print("Player 2의 승리입니다!")
-                            break
+                            break outer
                         } else {
                             yutBoard[secondPlayerCurrentPosition[0].y][secondPlayerCurrentPosition[0].x] = secondPlayerMal
                             printYutBoard(yutBoard)
@@ -187,7 +180,7 @@ struct YutPlay {
                     self.secondPlayerCurrentPosition[0] = throwYut(mal: secondPlayerCurrentPosition[0], player: 2)
                     if isSecondPlayerGallIn[0] == true {
                         print("Player 2의 승리입니다!")
-                        break
+                        break outer
                     } else {
                         yutBoard[secondPlayerCurrentPosition[0].y][secondPlayerCurrentPosition[0].x] = secondPlayerMal
                         printYutBoard(yutBoard)
@@ -205,7 +198,7 @@ struct YutPlay {
                     } else {
                         if isFirstPlayerGallIn[0] == true {
                             print("Player 1의 승리입니다!")
-                            break
+                            break outer
                         } else {
                             yutBoard[firstPlayerCurrentPosition[0].y][firstPlayerCurrentPosition[0].x] = firstPlayerMal
                             printYutBoard(yutBoard)
