@@ -24,16 +24,18 @@ struct YutPlay {
                                 ["⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️"]]
     
     var playerCurrentPosition = [[Position(y: -1, x: -1)],[Position(y: -1, x: -1)]]
-    var playerMalColor:[String] = ["🟤","⚫️"]
+    var playerMalColor = ["🟤","⚫️"]
     var whosFirst: Int = 0 // 누가 먼저 시작하는지 저장해놓는 변수
     var whosLast: Int = 0 // while문이 돌면서 마지막으로 던진 사람이 계속 변할 수 있기 때문에, while문 반복 한 번이 끝날때마다 누가 마지막으로 던졌는지를 저장해주는 변수
     var isFromFirstIntersection: [[Int]] = [[0,0,0],[0,0,0]] // 첫번째 분기점에서 한 가운데 지점으로 갈 경우에만 선택지를 2개(오른쪽으로, 왼쪽으로) 가질 수 있으므로 flag bit 사용
-    var isComingBack: [[Bool]] = [[false,false,false], [false,false,false]] // YutBoard의 y=10, x=15 지점에 말이 온 경우, isRight()함수 호출시 말이 윷판의 오른쪽에 있다고 인식되므로 다시 출발하는 말로 인식이 됨.
+    var isComingBack = [[false,false,false], [false,false,false]] // YutBoard의 y=10, x=15 지점에 말이 온 경우, isRight()함수 호출시 말이 윷판의 오른쪽에 있다고 인식되므로 다시 출발하는 말로 인식이 됨.
     // 만약 한바퀴를 돌거나, 도->빽도->빽도의 경우에는 그 말에 해당하는 isComingBack의 값을 true로 해주어, 이 말은 골인하는 중이라는 것을 표시해주는 변수
     var stackedYut: [[String]] = [[],[]] //윷,모가 나올 경우 더 던질 수 있으므로, 나왔던 윷 모양을 저장해놓는 변수
-    var previousPositionArr: [[Position]] = [[Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)],
-                                             [Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)]]
-    mutating func setMalColor() {
+    var previousPositionArr = [[Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)],
+                               [Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)]]
+    // 빽도를 처리해주기 위해 이전 Position을 저장해놓는 프로퍼티
+    var isPiggybackMal = [[false, false, false],[false, false, false]] // 말을 업은 경우를 저장하기 위한 프로퍼티
+    private mutating func setMalColor() {
         printGameStart()
         print("1P의 말의 색깔을 선택하세요.")
         print("1 : 🔴, 2 : 🟠, 3 : 🟡, 4 : 🟢, 5 : 🔵, 6 : 🟣")
@@ -134,18 +136,18 @@ struct YutPlay {
             switch whosLast { // 마지막으로 윷을 던진 Player에 따른 switch문
             case 1:
                 if isCaptured(2,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
-                    sequence1(1, self.yutBoard)
+                    playYutPlayAfterCaptureOtherPlayerMal(1, self.yutBoard)
                     whosLast = 1
                 } else { // 1P가 2P를 안잡았을 때 -> 2P 먼저 시작
-                    sequence2(2, self.yutBoard)
+                    playYutPlayNotCaptured(2, self.yutBoard)
                     whosLast = 2
                 }
             case 2: //마지막으로 윷 던진 사람이 2일 경우
                 if isCaptured(1,self.playerCurrentPosition).contains(true) { // 2P가 1P의 말을 잡았을 때 -> 2P 먼저 시작
-                    sequence1(2, self.yutBoard)
+                    playYutPlayAfterCaptureOtherPlayerMal(2, self.yutBoard)
                     whosLast = 2
                 } else { // 안잡았을 때 -> 1P 먼저 시작
-                    sequence2(1, self.yutBoard)
+                    playYutPlayNotCaptured(1, self.yutBoard)
                     whosLast = 1
                 }
             default:
@@ -202,7 +204,6 @@ struct YutPlay {
                 printYut(yut1, yut2, yut3, backYut)
                 stackedYut[player - 1].append("모")
             }
-            
             stackedYut[player - 1] = treatYutOrMo(target: stackedYut[player-1], player: player)
             while stackedYut[player-1].count != 0 {
                 print("현재 움직일 수 있는 말은 \(playerCurrentPosition[player-1].count)개 있습니다.")
@@ -242,16 +243,14 @@ struct YutPlay {
                 if player == 1 { otherPlayer = 2 }
                 else { otherPlayer = 1 }
                 if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
-                    sequence1(player, yutBoard)
+                    playYutPlayAfterCaptureOtherPlayerMal(player, yutBoard)
                     whosLast = player
                     yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
                     while isCaptured(otherPlayer,playerCurrentPosition).contains(true) {
-                        sequence1(player, yutBoard)
+                        playYutPlayAfterCaptureOtherPlayerMal(player, yutBoard)
                         whosLast = player
-                        
                     }
                 }
-                
             }
         default: howManyMove = 0
         }
@@ -565,8 +564,7 @@ struct YutPlay {
         return count + 1
     }
     
-    private mutating func sequence1(_ player: Int, _ yutBoard: [[String]] ) {
-        // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
+    private mutating func playYutPlayAfterCaptureOtherPlayerMal(_ player: Int, _ yutBoard: [[String]] ) { //player가 상대방의 말을 잡은 경우에 실행되는 메소드
         var otherPlayer = 0
         if player == 1 {
             otherPlayer = 2
@@ -574,9 +572,12 @@ struct YutPlay {
             otherPlayer = 1
         }
         var yutBoard = yutBoard
-        let capturedIndex = isCaptured(otherPlayer,playerCurrentPosition).firstIndex(of: true)
-        self.playerCurrentPosition[otherPlayer-1].remove(at: capturedIndex!)
-        self.isComingBack[otherPlayer-1][capturedIndex!] = false
+        while isCaptured(otherPlayer, playerCurrentPosition).contains(true) {
+            let capturedIndex = isCaptured(otherPlayer,playerCurrentPosition).firstIndex(of: true)
+            self.playerCurrentPosition[otherPlayer-1].remove(at: capturedIndex!)
+            self.isComingBack[otherPlayer-1][capturedIndex!] = false
+            self.previousPositionArr[otherPlayer-1][capturedIndex!] = Position(y: -1, x: -1)
+        }
         yutBoard = reloadYutBoard(playerCurrentPosition, which: otherPlayer)
         print("\(player)P가 \(otherPlayer)P의 말을 잡았으므로, \(player)P가 다시 윷을 던집니다.")
         let currentMove = throwYut(player: player, currentYutBoard: yutBoard)
@@ -666,7 +667,7 @@ struct YutPlay {
         }
     }
     
-    private mutating func sequence2(_ player: Int, _ yutBoard: [[String]]) {
+    private mutating func playYutPlayNotCaptured(_ player: Int, _ yutBoard: [[String]]) { // 서로 잡거나 잡히지 않았을 경우 실행되는 메소드
         var yutBoard = yutBoard
         var otherplayer: Int
         if player == 1 {
@@ -799,6 +800,25 @@ struct YutPlay {
         return yutBoard
         
     }
+//    private mutating func isPiggybackMal(_ player: Int) -> Bool {
+//        var returnValue = false
+//        if playerCurrentPosition[player-1].count < 2 { return false }
+//        else {
+//            for index1 in 0..<playerCurrentPosition[player-1].count {
+//                for index2 in index1..<playerCurrentPosition[player-1].count {
+//                    if playerCurrentPosition[player-1][index1].x != -1 && playerCurrentPosition[player-1][index2].x != -1 {
+//                        if playerCurrentPosition[player-1][index1].x == playerCurrentPosition[player-1][index2].x &&
+//                            playerCurrentPosition[player-1][index1].y == playerCurrentPosition[player-1][index2].y {
+//                            self.isPiggybackMal[player-1][index1] = true
+//                            self.isPiggybackMal[player-1][index2] = true
+//                            returnValue = true
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return returnValue
+//    }
     
 }
 
