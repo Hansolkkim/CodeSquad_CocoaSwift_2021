@@ -234,10 +234,20 @@ struct YutPlay {
                     playerCurrentPosition[player-1][choosedMal-1] = moveMal(from: playerCurrentPosition[player-1][choosedMal-1], by: by, player: player, targetMal: choosedMal-1)
                 }
                 yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                if stackedYut.count != 0 {printYutBoard(yutBoard)}
+                if stackedYut[player-1].count != 0 {printYutBoard(yutBoard)}
                 var otherPlayer = 0
                 if player == 1 { otherPlayer = 2 }
                 else { otherPlayer = 1 }
+                if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
+                    sequence1(player, yutBoard)
+                    whosLast = player
+                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
+                }
+                if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
+                    sequence1(player, yutBoard)
+                    whosLast = player
+                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
+                }
                 if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
                     sequence1(player, yutBoard)
                     whosLast = player
@@ -288,7 +298,7 @@ struct YutPlay {
 //                    yutBoard = reloadYutBoard(playerCurrentPosition, which: 3, currentYutBoard: yutBoard)
                 }
                 yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                if stackedYut.count != 0 {printYutBoard(yutBoard)}
+                if stackedYut[player-1].count != 0 {printYutBoard(yutBoard)}
                 var otherPlayer = 0
                 if player == 1 { otherPlayer = 2 }
                 else { otherPlayer = 1 }
@@ -297,7 +307,16 @@ struct YutPlay {
                     whosLast = player
                     yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
                 }
-                
+                if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
+                    sequence1(player, yutBoard)
+                    whosLast = player
+                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
+                }
+                if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
+                    sequence1(player, yutBoard)
+                    whosLast = player
+                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
+                }
             }
             
         default: howManyMove = 0
