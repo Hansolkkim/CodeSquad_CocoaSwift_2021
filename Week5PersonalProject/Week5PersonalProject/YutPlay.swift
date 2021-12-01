@@ -31,7 +31,8 @@ struct YutPlay {
     var isComingBack: [[Bool]] = [[false,false,false], [false,false,false]] // YutBoard의 y=10, x=15 지점에 말이 온 경우, isRight()함수 호출시 말이 윷판의 오른쪽에 있다고 인식되므로 다시 출발하는 말로 인식이 됨.
     // 만약 한바퀴를 돌거나, 도->빽도->빽도의 경우에는 그 말에 해당하는 isComingBack의 값을 true로 해주어, 이 말은 골인하는 중이라는 것을 표시해주는 변수
     var stackedYut: [[String]] = [[],[]] //윷,모가 나올 경우 더 던질 수 있으므로, 나왔던 윷 모양을 저장해놓는 변수
-//    var previousPosition: [[Position]] = [[Position(y: -1, x: -1), Position(y: -1, x: -1), Position(y: -1, x: -1)], [Position(y: -1, x: -1), Position(y: -1, x: -1), Position(y: -1, x: -1)]]
+    var previousPositionArr: [[Position]] = [[Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)],
+                                        [Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)]]
     mutating func setMalColor() {
         printGameStart()
         print("1P의 말의 색깔을 선택하세요.")
@@ -129,8 +130,8 @@ struct YutPlay {
             printYutBoard(yutBoard)
         }
         whosLast = whosFirst
-        outer : while !isAllMalsGallin(player: 1, playerCurrentPosition: self.playerCurrentPosition) && !isAllMalsGallin(player: 2, playerCurrentPosition: self.playerCurrentPosition){
-            inner : switch whosLast { // 마지막으로 윷을 던진 Player에 따른 switch문
+        while !isAllMalsGallin(player: 1, playerCurrentPosition: self.playerCurrentPosition) && !isAllMalsGallin(player: 2, playerCurrentPosition: self.playerCurrentPosition){
+            switch whosLast { // 마지막으로 윷을 던진 Player에 따른 switch문
             case 1:
                 if isCaptured(2,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
                     sequence1(1, self.yutBoard)
@@ -191,15 +192,19 @@ struct YutPlay {
             printYut(yut1, yut2, yut3, backYut)
             return 3
             
-        case 4:
-            print("윷!")
-            printYut(yut1, yut2, yut3, backYut)
-            stackedYut[player - 1].append("윷")
+        case 4,0:
+            if sum == 4 {
+                print("윷!")
+                printYut(yut1, yut2, yut3, backYut)
+                stackedYut[player - 1].append("윷")
+            } else if sum == 0 {
+                print("모!")
+                printYut(yut1, yut2, yut3, backYut)
+                stackedYut[player - 1].append("모")
+            }
+            
             stackedYut[player - 1] = treatYutOrMo(target: stackedYut[player-1], player: player)
             while stackedYut[player-1].count != 0 {
-                if playerCurrentPosition[player-1].count != 0 {
-                    
-                }
                 print("현재 움직일 수 있는 말은 \(playerCurrentPosition[player-1].count)개 있습니다.")
                 for (index, position) in playerCurrentPosition[player-1].enumerated() {
                     if position.x == 100 {
@@ -228,8 +233,6 @@ struct YutPlay {
                 if choosedMal == 0 {
                     playerCurrentPosition[player-1].append(Position(y: -1, x: -1))
                     playerCurrentPosition[player-1][playerCurrentPosition[player-1].count-1] = moveMal(from: playerCurrentPosition[player-1][playerCurrentPosition[player-1].count-1], by: by, player: player, targetMal: playerCurrentPosition[player-1].count-1)
-//                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player)
-//                    yutBoard[playerCurrentPosition[player-1][playerCurrentPosition[player-1].count-1].y][playerCurrentPosition[player-1][playerCurrentPosition[player-1].count-1].x] = playerMalColor[player-1]
                 } else {
                     playerCurrentPosition[player-1][choosedMal-1] = moveMal(from: playerCurrentPosition[player-1][choosedMal-1], by: by, player: player, targetMal: choosedMal-1)
                 }
@@ -242,83 +245,20 @@ struct YutPlay {
                     sequence1(player, yutBoard)
                     whosLast = player
                     yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                }
-                if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
-                    sequence1(player, yutBoard)
-                    whosLast = player
-                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                }
-                if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
-                    sequence1(player, yutBoard)
-                    whosLast = player
-                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                }
-            }
-            
-        case 0:
-            print("모!")
-            printYut(yut1, yut2, yut3, backYut)
-            
-            stackedYut[player - 1].append("모")
-            stackedYut[player-1] = treatYutOrMo(target: stackedYut[player-1], player: player)
-            while stackedYut[player-1].count != 0 {
-                print("현재 움직일 수 있는 말은 \(playerCurrentPosition[player-1].count)개 있습니다.")
-                for (index, position) in playerCurrentPosition[player-1].enumerated() {
-                    if position.x == 100 {
-                        print("\(index + 1) : ( 완주 )")
-                    } else {
-                        print("\(index + 1) : (\(position.x) , \(position.y))")
+                    if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
+                        sequence1(player, yutBoard)
+                        whosLast = player
+                        yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
+                        if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
+                            sequence1(player, yutBoard)
+                            whosLast = player
+                            yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
+                        }
                     }
                 }
-                let currentMove = stackedYut[player-1].removeFirst()
-                stackedYut[player-1].insert(currentMove, at: 0)
-                print("\(stackedYut[player-1]) 중, [\(stackedYut[player-1].removeFirst())](으)로는 몇번째 말을 움직이시겠습니까?", terminator: "")
-                if playerCurrentPosition[player-1].count != 3 { print("새로운 말을 움직이시려면 0을 입력해주세요. : ", terminator: "")}
-                guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
-                    fatalError("Bad Input")
-                }
-                var by: Int
-                switch currentMove {
-                case "빽도": by = -1
-                case "도": by = 1
-                case "개": by = 2
-                case "걸": by = 3
-                case "윷": by = 4
-                case "모": by = 5
-                default: by = 0
-                }
-                if choosedMal == 0 {
-                    //                    isPlayerGallin[player-1].append(false)
-                    playerCurrentPosition[player-1].append(Position(y: -1, x: -1))
-                    playerCurrentPosition[player-1][playerCurrentPosition[player-1].count-1] = moveMal(from: playerCurrentPosition[player-1][playerCurrentPosition[player-1].count-1], by: by, player: player, targetMal: playerCurrentPosition[player-1].count-1)
-//                    yutBoard[playerCurrentPosition[player-1][playerCurrentPosition[player-1].count-1].y][playerCurrentPosition[player-1][playerCurrentPosition[player-1].count-1].x] = playerMalColor[player-1]
-//                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player)
-                } else {
-                    playerCurrentPosition[player-1][choosedMal-1] = moveMal(from: playerCurrentPosition[player-1][choosedMal-1], by: by, player: player, targetMal: choosedMal-1)
-//                    yutBoard = reloadYutBoard(playerCurrentPosition, which: 3, currentYutBoard: yutBoard)
-                }
-                yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                if stackedYut[player-1].count != 0 {printYutBoard(yutBoard)}
-                var otherPlayer = 0
-                if player == 1 { otherPlayer = 2 }
-                else { otherPlayer = 1 }
-                if isCaptured(otherPlayer,playerCurrentPosition).contains(true) {
-                    sequence1(player, yutBoard)
-                    whosLast = player
-                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                }
-                if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
-                    sequence1(player, yutBoard)
-                    whosLast = player
-                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                }
-                if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
-                    sequence1(player, yutBoard)
-                    whosLast = player
-                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                }
+                
+               
             }
-            
         default: howManyMove = 0
         }
         return howManyMove
@@ -327,14 +267,16 @@ struct YutPlay {
     
     private mutating func moveMal(from origin: Position, by moveto: Int, player: Int, targetMal: Int) -> Position {
         let currentPosition = origin
-//        self.previousPosition[player-1][targetMal] = origin
         if isNotStarted(position: currentPosition) {
             isFromFirstIntersection[player-1][targetMal] = 0
             isComingBack[player-1][targetMal] = false
             if moveto == -1 {return Position(y: -1, x: -1)}
-            else {return Position(y: 10 - 2*moveto, x: 15)}
+            else {
+                return Position(y: 10 - 2*moveto, x: 15)
+            }
         } else if isInIntersection(position: currentPosition){
             if currentPosition.x == 15 && currentPosition.y == 0 && moveto != 0 { // 우측 상단 분기점에 위치했을 경우,
+                if moveto == -1 {return Position(y: 2, x: 15)}
                 self.isComingBack[player-1][targetMal] = true
                 print("안쪽으로 들어가려면 1을, 바깥쪽을 돌려면 2를 입력해주세요. ",terminator: "")
                 guard let input = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
@@ -347,7 +289,6 @@ struct YutPlay {
                     else if moveto == 3 {return Position(y: 5, x: 8)}
                     else if moveto == 4 {return Position(y: 6, x: 6)}
                     else if moveto == 5 {return Position(y: 8, x: 3)}
-                    else if moveto == -1 {return Position(y: 2, x: 15)}
                 } else {
                     let movedPositionX = currentPosition.x - 3*moveto
                     switch movedPositionX {
@@ -358,6 +299,7 @@ struct YutPlay {
                     }
                 }
             } else if currentPosition.x == 0 && currentPosition.y == 0 && moveto != 0 { // 좌측 상단 분기점에 위치했을 경우,
+                if moveto == -1 {return Position(y: 0, x: 3)}
                 isFromFirstIntersection[player-1][targetMal] = 0
                 print("안쪽으로 들어가려면 1을, 바깥쪽을 돌려면 2를 입력해주세요. ",terminator: "")
                 guard let input = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
@@ -369,7 +311,6 @@ struct YutPlay {
                     else if moveto == 3 {return Position(y: 5, x: 8)}
                     else if moveto == 4 {return Position(y: 6, x: 9)}
                     else if moveto == 5 {return Position(y: 8, x: 12)}
-                    else if moveto == -1 {return Position(y: 0, x: 3)}
                 } else {
                     let movedPositionY = currentPosition.y + 2*moveto
                     switch movedPositionY {
@@ -386,6 +327,7 @@ struct YutPlay {
                    (currentPosition.y == 6 && currentPosition.x == 6) ||
                    (currentPosition.y == 8 && currentPosition.x == 3)) && isFromFirstIntersection[player-1][targetMal] == 1 && moveto != 0 {
             self.isComingBack[player-1][targetMal] = true
+            previousPositionArr[player-1][targetMal] = Position(y: 8, x: 3)
             switch (currentPosition.y, currentPosition.x) {
             case (2,12):
                 switch moveto {
@@ -394,7 +336,8 @@ struct YutPlay {
                 case 2: return Position(y: 5, x: 8)
                 case 3: return Position(y: 6, x: 6)
                 case 4: return Position(y: 8, x: 3)
-                case 5: return Position(y: 10, x: 0)
+                case 5:
+                    return Position(y: 10, x: 0)
                 default: return Position(y: -1, x: -1)
                 }
             case (4,9):
@@ -428,6 +371,7 @@ struct YutPlay {
                 default: return Position(y: -1, x: -1)
                 }
             case (5,8):
+                if moveto ==  -1 {return Position(y: 4, x: 9)}
                 print("오른쪽으로 가려면 1을, 왼쪽으로 가려면 2를 입력해주세요. ",terminator: "")
                 guard let input = readLine().map({Int($0)}) else {
                     return Position(y:-1,x:-1)
@@ -435,10 +379,9 @@ struct YutPlay {
                 if input == 1 {
                     self.isComingBack[player-1][targetMal] = true
                     switch moveto {
-                    case -1: return Position(y: 4, x: 9)
                     case 1: return Position(y: 6, x: 9)
                     case 2: return Position(y: 8, x: 12)
-                    case 3: return Position(y: 10, x: 15)
+                    case 3:return Position(y: 10, x: 15)
                     default:
                         print("\(player)P의 말 \(countGallInMal(player))개가 들어왔습니다.")
                         return Position(y: 100, x: 100)
@@ -446,7 +389,6 @@ struct YutPlay {
                 } else {
                     self.isComingBack[player-1][targetMal] = true
                     switch moveto {
-                    case -1: return Position(y: 4, x: 9)
                     case 1: return Position(y: 6, x: 6)
                     case 2: return Position(y: 8, x: 3)
                     case 3: return Position(y: 10, x: 0)
@@ -463,6 +405,7 @@ struct YutPlay {
                    (currentPosition.y == 6 && currentPosition.x == 9) ||
                    (currentPosition.y == 8 && currentPosition.x == 12)) && isFromFirstIntersection[player-1][targetMal] == 0 && moveto != 0 {
             self.isComingBack[player-1][targetMal] = true
+            previousPositionArr[player-1][targetMal] = Position(y: 8, x: 12)
             switch (currentPosition.y, currentPosition.x) {
             case (2,3):
                 switch moveto {
@@ -471,7 +414,8 @@ struct YutPlay {
                 case 2: return Position(y: 5, x: 8)
                 case 3: return Position(y: 6, x: 9)
                 case 4: return Position(y: 8, x: 12)
-                case 5: return Position(y: 10, x: 15)
+                case 5:
+                    return Position(y: 10, x: 15)
                 default: return Position(y: -1, x: -1)
                 }
             case (4,6):
@@ -507,7 +451,8 @@ struct YutPlay {
             case (8,12):
                 switch moveto {
                 case -1: return Position(y: 6, x: 9)
-                case 1: return Position(y: 10, x: 15)
+                case 1:
+                    return Position(y: 10, x: 15)
                 default:
                     print("\(player)P의 말 \(countGallInMal(player))개가 들어왔습니다.")
                     return Position(y: 100, x: 100)
@@ -521,6 +466,10 @@ struct YutPlay {
             } else if isStartingPoint(position: currentPosition) && isComingBack[player-1][targetMal] && moveto >= 1 {
                 print("\(player)P의 말 \(countGallInMal(player))개가 들어왔습니다.")
                 return Position(y: 100, x: 100)
+            } else if isStartingPoint(position: currentPosition) && previousPositionArr[player-1][targetMal].x != -1 {
+                let tempPosition = previousPositionArr[player-1][targetMal]
+                previousPositionArr[player-1][targetMal] = Position(y: -1, x: -1)
+                return tempPosition
             }
             isComingBack[player-1][targetMal] = false
             let movedPositionY = currentPosition.y - 2*moveto
@@ -540,6 +489,11 @@ struct YutPlay {
                 return Position(y: currentPosition.y, x:movedPositionX)
             }
         } else if isLeft(position: currentPosition) {
+            if currentPosition.y == 10 && currentPosition.x == 0 {
+                if moveto == -1 && previousPositionArr[player-1][targetMal].x != -1 {
+                    return previousPositionArr[player-1][targetMal]
+                } else if moveto == -1 { return Position(y: 8, x: 0) }
+            }
             let movedPositionY = currentPosition.y + 2*moveto
             switch movedPositionY {
             case 11...:
@@ -565,87 +519,44 @@ struct YutPlay {
     private func treatYutOrMo(target: [String], player: Int) -> [String] {
         var target = target
         if target.count >= 3 {return target}
-        if target[0] == "윷" {
-            print("윷이 나왔으므로 \(player)P가 한 번 더 던지겠습니다..")
-            let probabilityInYut = [0,0,0,0,1,1,1,1,1,1]
-            let yut1 = probabilityInYut.randomElement()!
-            let yut2 = probabilityInYut.randomElement()!
-            let yut3 = probabilityInYut.randomElement()!
-            let backYut = probabilityInYut.randomElement()!
-            let sum = yut1 + yut2 + yut3 + backYut
-            switch sum {
-            case 1:
-                if backYut == 1 {
-                    target.insert("빽도", at: 0)
-                    print("빽도!")
-                } else {
-                    target.insert("도", at: 0)
-                    print("도!")
-                }
-                printYut(yut1, yut2, yut3, backYut)
-            case 2:
-                target.insert("개", at: 0)
-                print("개!")
-                printYut(yut1, yut2, yut3, backYut)
-            case 3:
-                target.insert("걸", at: 0)
-                print("걸!")
-                printYut(yut1, yut2, yut3, backYut)
-            case 4:
-                target.insert("윷", at: 0)
-                print("윷!")
-                printYut(yut1, yut2, yut3, backYut)
-                target = treatYutOrMo( target: target, player: player)
-            case 5:
-                target.insert("모", at: 0)
-                print("모!")
-                printYut(yut1, yut2, yut3, backYut)
-                target = treatYutOrMo(target: target, player: player)
-                
-            default:
-                return target
+        print("\(target[0])이 나왔으므로 \(player)P가 한 번 더 던지겠습니다..")
+        let probabilityInYut = [0,0,0,0,1,1,1,1,1,1]
+        let yut1 = probabilityInYut.randomElement()!
+        let yut2 = probabilityInYut.randomElement()!
+        let yut3 = probabilityInYut.randomElement()!
+        let backYut = probabilityInYut.randomElement()!
+        let sum = yut1 + yut2 + yut3 + backYut
+        switch sum {
+        case 1:
+            if backYut == 1 {
+                target.insert("빽도", at: 0)
+                print("빽도!")
+            } else {
+                target.insert("도", at: 0)
+                print("도!")
             }
+            printYut(yut1, yut2, yut3, backYut)
+        case 2:
+            target.insert("개", at: 0)
+            print("개!")
+            printYut(yut1, yut2, yut3, backYut)
+        case 3:
+            target.insert("걸", at: 0)
+            print("걸!")
+            printYut(yut1, yut2, yut3, backYut)
+        case 4:
+            target.insert("윷", at: 0)
+            print("윷!")
+            printYut(yut1, yut2, yut3, backYut)
+            target = treatYutOrMo( target: target, player: player)
+        case 0:
+            target.insert("모", at: 0)
+            print("모!")
+            printYut(yut1, yut2, yut3, backYut)
+            target = treatYutOrMo(target: target, player: player)
             
-            
-        } else if target[0] == "모" {
-            print("모가 나왔으므로 \(player)P가 한 번 더 던지겠습니다..")
-            let probabilityInYut = [0,0,0,0,1,1,1,1,1,1]
-            let yut1 = probabilityInYut.randomElement()!
-            let yut2 = probabilityInYut.randomElement()!
-            let yut3 = probabilityInYut.randomElement()!
-            let backYut = probabilityInYut.randomElement()!
-            let sum = yut1 + yut2 + yut3 + backYut
-            switch sum {
-            case 1:
-                if backYut == 1 {
-                    target.insert("빽도", at: 0)
-                    print("빽도!")
-                } else {
-                    target.insert("도", at: 0)
-                    print("도!")
-                }
-                printYut(yut1, yut2, yut3, backYut)
-            case 2:
-                target.insert("개", at: 0)
-                print("개!")
-                printYut(yut1, yut2, yut3, backYut)
-            case 3:
-                target.insert("걸", at: 0)
-                print("걸!")
-                printYut(yut1, yut2, yut3, backYut)
-            case 4:
-                target.insert("윷", at: 0)
-                print("윷!")
-                printYut(yut1, yut2, yut3, backYut)
-                target = treatYutOrMo( target: target, player: player)
-            case 5:
-                target.insert("모", at: 0)
-                print("모!")
-                printYut(yut1, yut2, yut3, backYut)
-                target = treatYutOrMo(target: target, player: player)
-            default:
-                return target
-            }
+        default:
+            return target
         }
         return target
     }
@@ -701,12 +612,12 @@ struct YutPlay {
                     guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
                         fatalError("Bad Input")
                     }
-                    //                                while choosedMal != 1 || choosedMal != 2 {
-                    //                                    print("1, 2 중에 선택해주세요.")
-                    //                                    guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
-                    //                                        fatalError("Bad Input")
-                    //                                    }
-                    //                                }
+//                    while choosedMal != 1 || choosedMal != 2 {
+//                        print("1, 2 중에 선택해주세요.")
+//                        guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
+//                            fatalError("Bad Input")
+//                        }
+//                    }
                     currentMal = choosedMal-1
                 }
             }
@@ -748,14 +659,14 @@ struct YutPlay {
                 return
             } else {
                 if currentMove != 0 {
-                    let previousPosition = playerCurrentPosition[player-1][currentMal]
+//                    let previousPosition = playerCurrentPosition[player-1][currentMal]
                     playerCurrentPosition[player-1][currentMal] = moveMal(from: playerCurrentPosition[player-1][currentMal], by: currentMove, player: player, targetMal: currentMal)
-                    if playerCurrentPosition[player-1][currentMal].x == 100 {
-                        yutBoard[previousPosition.y][previousPosition.x] = "⚪️"
-                    } else {
-//                        yutBoard[playerCurrentPosition[player-1][currentMal].y][playerCurrentPosition[player-1][currentMal].x] = playerMalColor[player-1]
-                        yutBoard = reloadYutBoard(playerCurrentPosition, which: player)
-                    }
+                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player + 2)
+//                    if playerCurrentPosition[player-1][currentMal].x == 100 {
+//                        yutBoard[previousPosition.y][previousPosition.x] = "⚪️"
+//                    } else {
+//                        yutBoard = reloadYutBoard(playerCurrentPosition, which: player)
+//                    }
                 }
                 yutBoard = reloadYutBoard(playerCurrentPosition, which: player + 2)
                 printYutBoard(yutBoard)
@@ -801,12 +712,12 @@ struct YutPlay {
                     guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
                         fatalError("Bad Input")
                     }
-                    //                                while choosedMal != 1 || choosedMal != 2 {
-                    //                                    print("1, 2 중에 선택해주세요.")
-                    //                                    guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
-                    //                                        fatalError("Bad Input")
-                    //                                    }
-                    //                                }
+//                    while choosedMal != 1 || choosedMal != 2 {
+//                        print("1, 2 중에 선택해주세요.")
+//                        guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
+//                            fatalError("Bad Input")
+//                        }
+//                    }
                     currentMal = choosedMal-1
                 }
             }
@@ -823,12 +734,12 @@ struct YutPlay {
             guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
                 fatalError("Bad Input")
             }
-            //                        while choosedMal != 1 || choosedMal != 2 || choosedMal != 3{
-            //                            print("1, 2, 3 중에 선택해주세요.")
-            //                            guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
-            //                                fatalError("Bad Input")
-            //                            }
-            //                        }
+//            while choosedMal != 1 || choosedMal != 2 || choosedMal != 3{
+//                print("1, 2, 3 중에 선택해주세요.")
+//                guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
+//                    fatalError("Bad Input")
+//                }
+//            }
             currentMal = choosedMal - 1
             
         } else if playerCurrentPosition[player-1].count == 0 && currentMove != 0 {
@@ -846,14 +757,14 @@ struct YutPlay {
                 return
             } else {
                 if currentMove != 0 {
-                    let previousPosition = playerCurrentPosition[player-1][currentMal]
+//                    let previousPosition = playerCurrentPosition[player-1][currentMal]
                     playerCurrentPosition[player-1][currentMal] = moveMal(from: playerCurrentPosition[player-1][currentMal], by: currentMove, player: player, targetMal: currentMal)
-                    if playerCurrentPosition[player-1][currentMal].x == 100 {
-                        yutBoard[previousPosition.y][previousPosition.x] = "⚪️"
-                    } else {
-                        yutBoard = reloadYutBoard(playerCurrentPosition, which: player)
-//                        yutBoard[playerCurrentPosition[player-1][currentMal].y][playerCurrentPosition[player-1][currentMal].x] = playerMalColor[player-1]
-                    }
+                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player + 2)
+//                    if playerCurrentPosition[player-1][currentMal].x == 100 {
+//                        yutBoard[previousPosition.y][previousPosition.x] = "⚪️"
+//                    } else {
+//                        yutBoard = reloadYutBoard(playerCurrentPosition, which: player)
+//                    }
                 }
                 yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
                 printYutBoard(yutBoard)
@@ -907,8 +818,5 @@ struct YutPlay {
         
     }
 
-    private func checkCapturedMal() {
-        //말이 잡혔을 때 진행되는 메소드 구현 예정
-    }
 }
 
