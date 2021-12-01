@@ -286,7 +286,7 @@ struct YutPlay {
                     let movedPositionX = currentPosition.x - 3*moveto
                     switch movedPositionX {
                     case ..<0:
-                        return Position(y: currentPosition.y + 2*(moveto-currentPosition.x/2), x:0)
+                        return Position(y: currentPosition.y + 2*(moveto-currentPosition.x/3), x:0)
                     default:
                         return Position(y: currentPosition.y, x:movedPositionX)
                     }
@@ -477,7 +477,7 @@ struct YutPlay {
             let movedPositionX = currentPosition.x - 3*moveto
             switch movedPositionX {
             case ..<0:
-                return Position(y: currentPosition.y + 2*(moveto-currentPosition.x/2), x:0)
+                return Position(y: currentPosition.y + 2*(moveto-currentPosition.x/3), x:0)
             default:
                 return Position(y: currentPosition.y, x:movedPositionX)
             }
