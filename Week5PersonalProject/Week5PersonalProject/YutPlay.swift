@@ -545,6 +545,7 @@ struct YutPlay {
     
     private func treatYutOrMo(target: [String], player: Int) -> [String] {
         var target = target
+        if target.count >= 3 {return target}
         if target[0] == "윷" {
             print("윷이 나왔으므로 \(player)P가 한 번 더 던지겠습니다..")
             let probabilityInYut = [0,0,0,0,1,1,1,1,1,1]
@@ -572,13 +573,11 @@ struct YutPlay {
                 print("걸!")
                 printYut(yut1, yut2, yut3, backYut)
             case 4:
-                if target.count >= 3 {return target}
                 target.insert("윷", at: 0)
                 print("윷!")
                 printYut(yut1, yut2, yut3, backYut)
                 target = treatYutOrMo( target: target, player: player)
             case 5:
-                if target.count >= 3 {return target}
                 target.insert("모", at: 0)
                 print("모!")
                 printYut(yut1, yut2, yut3, backYut)
@@ -616,13 +615,11 @@ struct YutPlay {
                 print("걸!")
                 printYut(yut1, yut2, yut3, backYut)
             case 4:
-                if target.count >= 3 {return target}
                 target.insert("윷", at: 0)
                 print("윷!")
                 printYut(yut1, yut2, yut3, backYut)
                 target = treatYutOrMo( target: target, player: player)
             case 5:
-                if target.count >= 3 {return target}
                 target.insert("모", at: 0)
                 print("모!")
                 printYut(yut1, yut2, yut3, backYut)
