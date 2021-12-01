@@ -32,7 +32,7 @@ struct YutPlay {
     // 만약 한바퀴를 돌거나, 도->빽도->빽도의 경우에는 그 말에 해당하는 isComingBack의 값을 true로 해주어, 이 말은 골인하는 중이라는 것을 표시해주는 변수
     var stackedYut: [[String]] = [[],[]] //윷,모가 나올 경우 더 던질 수 있으므로, 나왔던 윷 모양을 저장해놓는 변수
     var previousPositionArr: [[Position]] = [[Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)],
-                                        [Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)]]
+                                             [Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)]]
     mutating func setMalColor() {
         printGameStart()
         print("1P의 말의 색깔을 선택하세요.")
@@ -245,19 +245,13 @@ struct YutPlay {
                     sequence1(player, yutBoard)
                     whosLast = player
                     yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                    if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
+                    while isCaptured(otherPlayer,playerCurrentPosition).contains(true) {
                         sequence1(player, yutBoard)
                         whosLast = player
-                        yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                        if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
-                            sequence1(player, yutBoard)
-                            whosLast = player
-                            yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                        }
+                        
                     }
                 }
                 
-               
             }
         default: howManyMove = 0
         }
@@ -612,12 +606,12 @@ struct YutPlay {
                     guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
                         fatalError("Bad Input")
                     }
-//                    while choosedMal != 1 || choosedMal != 2 {
-//                        print("1, 2 중에 선택해주세요.")
-//                        guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
-//                            fatalError("Bad Input")
-//                        }
-//                    }
+                    //                    while choosedMal != 1 || choosedMal != 2 {
+                    //                        print("1, 2 중에 선택해주세요.")
+                    //                        guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
+                    //                            fatalError("Bad Input")
+                    //                        }
+                    //                    }
                     currentMal = choosedMal-1
                 }
             }
@@ -634,20 +628,20 @@ struct YutPlay {
             guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
                 fatalError("Bad Input")
             }
-            //                        while choosedMal != 1 || choosedMal != 2 || choosedMal != 3{
-            //                            print("1, 2, 3 중에 선택해주세요.")
-            //                            guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
-            //                                fatalError("Bad Input")
-            //                            }
-            //                        }
+            //            while choosedMal != 1 || choosedMal != 2 || choosedMal != 3{
+            //                print("1, 2, 3 중에 선택해주세요.")
+            //                guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
+            //                    fatalError("Bad Input")
+            //                }
+            //            }
             currentMal = choosedMal - 1
             
         } else if playerCurrentPosition[player-1].count == 0 && currentMove != 0 {
             playerCurrentPosition[player-1].append(Position(y: -1, x: -1))
             currentMal = 0
         }
-        //                    self.playerCurrentPosition[1-1][currentMal] =
-        //                        moveMal(from: playerCurrentPosition[1-1][currentMal], by: currentMove, player: 1, targetMal: currentMal)
+        //        self.playerCurrentPosition[1-1][currentMal] =
+        //        moveMal(from: playerCurrentPosition[1-1][currentMal], by: currentMove, player: 1, targetMal: currentMal)
         if playerCurrentPosition[player-1].count == 0 {playerCurrentPosition[player-1].append(Position(y: -1, x: -1))}
         if playerCurrentPosition[player-1][currentMal].x == -1 && currentMove == -1{ //출발 안했는데 빽도가 나온 경우
             print("출발하지 않았기 때문에 이 말을 지정할 수 없습니다.")
@@ -659,14 +653,8 @@ struct YutPlay {
                 return
             } else {
                 if currentMove != 0 {
-//                    let previousPosition = playerCurrentPosition[player-1][currentMal]
                     playerCurrentPosition[player-1][currentMal] = moveMal(from: playerCurrentPosition[player-1][currentMal], by: currentMove, player: player, targetMal: currentMal)
                     yutBoard = reloadYutBoard(playerCurrentPosition, which: player + 2)
-//                    if playerCurrentPosition[player-1][currentMal].x == 100 {
-//                        yutBoard[previousPosition.y][previousPosition.x] = "⚪️"
-//                    } else {
-//                        yutBoard = reloadYutBoard(playerCurrentPosition, which: player)
-//                    }
                 }
                 yutBoard = reloadYutBoard(playerCurrentPosition, which: player + 2)
                 printYutBoard(yutBoard)
@@ -712,12 +700,12 @@ struct YutPlay {
                     guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
                         fatalError("Bad Input")
                     }
-//                    while choosedMal != 1 || choosedMal != 2 {
-//                        print("1, 2 중에 선택해주세요.")
-//                        guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
-//                            fatalError("Bad Input")
-//                        }
-//                    }
+                    //                    while choosedMal != 1 || choosedMal != 2 {
+                    //                        print("1, 2 중에 선택해주세요.")
+                    //                        guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
+                    //                            fatalError("Bad Input")
+                    //                        }
+                    //                    }
                     currentMal = choosedMal-1
                 }
             }
@@ -734,12 +722,12 @@ struct YutPlay {
             guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
                 fatalError("Bad Input")
             }
-//            while choosedMal != 1 || choosedMal != 2 || choosedMal != 3{
-//                print("1, 2, 3 중에 선택해주세요.")
-//                guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
-//                    fatalError("Bad Input")
-//                }
-//            }
+            //            while choosedMal != 1 || choosedMal != 2 || choosedMal != 3{
+            //                print("1, 2, 3 중에 선택해주세요.")
+            //                guard let choosedMal = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
+            //                    fatalError("Bad Input")
+            //                }
+            //            }
             currentMal = choosedMal - 1
             
         } else if playerCurrentPosition[player-1].count == 0 && currentMove != 0 {
@@ -757,14 +745,8 @@ struct YutPlay {
                 return
             } else {
                 if currentMove != 0 {
-//                    let previousPosition = playerCurrentPosition[player-1][currentMal]
                     playerCurrentPosition[player-1][currentMal] = moveMal(from: playerCurrentPosition[player-1][currentMal], by: currentMove, player: player, targetMal: currentMal)
                     yutBoard = reloadYutBoard(playerCurrentPosition, which: player + 2)
-//                    if playerCurrentPosition[player-1][currentMal].x == 100 {
-//                        yutBoard[previousPosition.y][previousPosition.x] = "⚪️"
-//                    } else {
-//                        yutBoard = reloadYutBoard(playerCurrentPosition, which: player)
-//                    }
                 }
                 yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
                 printYutBoard(yutBoard)
@@ -780,8 +762,8 @@ struct YutPlay {
         switch player {
         case 1:
             for malNumber in 0..<P[1-1].count {
-            if P[1-1][malNumber].x != -1 && P[1-1][malNumber].x != 100 {
-                yutBoard[P[1-1][malNumber].y][P[1-1][malNumber].x] = playerMalColor[1-1]
+                if P[1-1][malNumber].x != -1 && P[1-1][malNumber].x != 100 {
+                    yutBoard[P[1-1][malNumber].y][P[1-1][malNumber].x] = playerMalColor[1-1]
                 }
             }
         case 2:
@@ -817,6 +799,6 @@ struct YutPlay {
         return yutBoard
         
     }
-
+    
 }
 
