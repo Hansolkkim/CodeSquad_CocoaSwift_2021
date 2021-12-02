@@ -27,7 +27,7 @@ struct YutPlay {
     var playerMalColor = ["🟤","⚫️"]
     var whosFirst: Int = 0 // 누가 먼저 시작하는지 저장해놓는 변수
     var whosLast: Int = 0 // while문이 돌면서 마지막으로 던진 사람이 계속 변할 수 있기 때문에, while문 반복 한 번이 끝날때마다 누가 마지막으로 던졌는지를 저장해주는 변수
-    var isFromFirstIntersection: [[Int]] = [[0,0,0],[0,0,0]] // 첫번째 분기점에서 한 가운데 지점으로 갈 경우에만 선택지를 2개(오른쪽으로, 왼쪽으로) 가질 수 있으므로 flag bit 사용
+//    var isFromFirstIntersection: [[Int]] = [[0,0,0],[0,0,0]] // 첫번째 분기점에서 한 가운데 지점으로 갈 경우에만 선택지를 2개(오른쪽으로, 왼쪽으로) 가질 수 있으므로 flag bit 사용
     var isComingBack = [[false,false,false], [false,false,false]] // YutBoard의 y=10, x=15 지점에 말이 온 경우, isRight()함수 호출시 말이 윷판의 오른쪽에 있다고 인식되므로 다시 출발하는 말로 인식이 됨.
     // 만약 한바퀴를 돌거나, 도->빽도->빽도의 경우에는 그 말에 해당하는 isComingBack의 값을 true로 해주어, 이 말은 골인하는 중이라는 것을 표시해주는 변수
     var stackedYut: [[String]] = [[],[]] //윷,모가 나올 경우 더 던질 수 있으므로, 나왔던 윷 모양을 저장해놓는 변수
@@ -242,14 +242,9 @@ struct YutPlay {
                 var otherPlayer = 0
                 if player == 1 { otherPlayer = 2 }
                 else { otherPlayer = 1 }
-                if isCaptured(otherPlayer,playerCurrentPosition).contains(true) { // 1P가 2P의 말을 잡았을 때 -> 1P 먼저 시작
+                while isCaptured(otherPlayer,playerCurrentPosition).contains(true) {
                     playYutPlayAfterCaptureOtherPlayerMal(player, yutBoard)
                     whosLast = player
-                    yutBoard = reloadYutBoard(playerCurrentPosition, which: player+2)
-                    while isCaptured(otherPlayer,playerCurrentPosition).contains(true) {
-                        playYutPlayAfterCaptureOtherPlayerMal(player, yutBoard)
-                        whosLast = player
-                    }
                 }
             }
         default: howManyMove = 0
@@ -261,7 +256,7 @@ struct YutPlay {
     private mutating func moveMal(from origin: Position, by moveto: Int, player: Int, targetMal: Int) -> Position {
         let currentPosition = origin
         if isNotStarted(position: currentPosition) {
-            isFromFirstIntersection[player-1][targetMal] = 0
+//            isFromFirstIntersection[player-1][targetMal] = 0
             isComingBack[player-1][targetMal] = false
             if moveto == -1 {return Position(y: -1, x: -1)}
             else {
@@ -276,7 +271,7 @@ struct YutPlay {
                     return Position(y:-1,x:-1)
                 }
                 if input == 1 {
-                    isFromFirstIntersection[player-1][targetMal] = 1
+//                    isFromFirstIntersection[player-1][targetMal] = 1
                     if moveto == 1 {return Position(y:2,x:12)}
                     else if moveto == 2 {return Position(y: 4, x: 9)}
                     else if moveto == 3 {return Position(y: 5, x: 8)}
@@ -293,7 +288,7 @@ struct YutPlay {
                 }
             } else if currentPosition.x == 0 && currentPosition.y == 0 && moveto != 0 { // 좌측 상단 분기점에 위치했을 경우,
                 if moveto == -1 {return Position(y: 0, x: 3)}
-                isFromFirstIntersection[player-1][targetMal] = 0
+//                isFromFirstIntersection[player-1][targetMal] = 0
                 print("안쪽으로 들어가려면 1을, 바깥쪽을 돌려면 2를 입력해주세요. ",terminator: "")
                 guard let input = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!) else {
                     return Position(y:-1,x:-1)
@@ -318,7 +313,9 @@ struct YutPlay {
                    (currentPosition.y == 4 && currentPosition.x ==  9) ||
                    (currentPosition.y == 5 && currentPosition.x == 8) ||
                    (currentPosition.y == 6 && currentPosition.x == 6) ||
-                   (currentPosition.y == 8 && currentPosition.x == 3)) && isFromFirstIntersection[player-1][targetMal] == 1 && moveto != 0 {
+                   (currentPosition.y == 8 && currentPosition.x == 3) ||
+                   (currentPosition.y == 6 && currentPosition.x == 9) ||
+                   (currentPosition.y == 8 && currentPosition.x == 12)) && /*isFromFirstIntersection[player-1][targetMal] == 1 &&*/ moveto != 0 {
             self.isComingBack[player-1][targetMal] = true
             previousPositionArr[player-1][targetMal] = Position(y: 8, x: 3)
             switch (currentPosition.y, currentPosition.x) {
@@ -390,13 +387,32 @@ struct YutPlay {
                     default: return Position(y: -1, x: -1)
                     }
                 }
+            case (6,9):
+                self.isComingBack[player-1][targetMal] = true
+                switch moveto {
+                case -1: return Position(y: 5, x: 8)
+                case 1: return Position(y: 8, x: 12)
+                case 2: return Position(y: 10, x: 15)
+                default:
+                    print("\(player)P의 말 \(countGallInMal(player))개가 들어왔습니다.")
+                    return Position(y: 100, x: 100)
+                }
+            case (8,12):
+                self.isComingBack[player-1][targetMal] = true
+                switch moveto {
+                case -1: return Position(y: 6, x: 9)
+                case 1: return Position(y: 10, x: 15)
+                default:
+                    print("\(player)P의 말 \(countGallInMal(player))개가 들어왔습니다.")
+                    return Position(y: 100, x: 100)
+                }
             default: return Position(y: -1, x: -1)
             }
         } else if ((currentPosition.y == 2 && currentPosition.x == 3) || // 두번째 분기점에서 분기한 지점인 경우
                    (currentPosition.y == 4 && currentPosition.x ==  6) ||
                    (currentPosition.y == 5 && currentPosition.x == 8) ||
                    (currentPosition.y == 6 && currentPosition.x == 9) ||
-                   (currentPosition.y == 8 && currentPosition.x == 12)) && isFromFirstIntersection[player-1][targetMal] == 0 && moveto != 0 {
+                   (currentPosition.y == 8 && currentPosition.x == 12)) /*&& isFromFirstIntersection[player-1][targetMal] == 0*/ && moveto != 0 {
             self.isComingBack[player-1][targetMal] = true
             previousPositionArr[player-1][targetMal] = Position(y: 8, x: 12)
             switch (currentPosition.y, currentPosition.x) {
