@@ -23,14 +23,14 @@ struct YutPlay {
                                 ["  ","ﾠ  ","  ","  ","  ","ﾠ  ","ﾠ  ","ﾠ  ","ﾠ  ","ﾠ  ","ﾠ  ","  ","ﾠ  ","  ","  ","  "],
                                 ["⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️","  ","ﾠ  ","⚪️"]]
     
-    var playerCurrentPosition = [[Position(y: -1, x: -1)],[Position(y: -1, x: -1)]]
-    var playerMalColor = ["🟤","⚫️"]
+    var playerCurrentPosition = [[Position(y: -1, x: -1)],[Position(y: -1, x: -1)]] //player의 말의 위치를 저장해놓는 프로퍼티
+    var playerMalColor = ["🟤","⚫️"] //player 말 색깔을 저장해놓는 프로퍼티
     var whosFirst: Int = 0 // 누가 먼저 시작하는지 저장해놓는 변수
-    var whosLast: Int = 0 // while문이 돌면서 마지막으로 던진 사람이 계속 변할 수 있기 때문에, while문 반복 한 번이 끝날때마다 누가 마지막으로 던졌는지를 저장해주는 변수
-    var isFromFirstIntersection: [[Int]] = [[0,0,0],[0,0,0]] // 첫번째 분기점에서 한 가운데 지점으로 갈 경우에만 선택지를 2개(오른쪽으로, 왼쪽으로) 가질 수 있으므로 flag bit 사용
-    var isComingBack = [[false,false,false], [false,false,false]] // YutBoard의 y=10, x=15 지점에 말이 온 경우, isRight()함수 호출시 말이 윷판의 오른쪽에 있다고 인식되므로 다시 출발하는 말로 인식이 됨.
-    // 만약 한바퀴를 돌거나, 도->빽도->빽도의 경우에는 그 말에 해당하는 isComingBack의 값을 true로 해주어, 이 말은 골인하는 중이라는 것을 표시해주는 변수
-    var stackedYut: [[String]] = [[],[]] //윷,모가 나올 경우 더 던질 수 있으므로, 나왔던 윷 모양을 저장해놓는 변수
+    var whosLast: Int = 0 // while문이 돌면서 마지막으로 던진 사람이 계속 변하기 때문에, while문 반복 한 번이 끝날때마다 누가 마지막으로 던졌는지를 저장해주는 프로퍼티
+    var isFromFirstIntersection: [[Int]] = [[0,0,0],[0,0,0]] // 첫번째 분기점에서 한 가운데 지점으로 갈 경우에만 선택지를 2개(오른쪽으로, 왼쪽으로) 가질 수 있으므로 flag bit 프로퍼티로 이용
+    var isComingBack = [[false,false,false], [false,false,false]] // YutBoard의 y=10, x=15 지점(시작지점)에 말이 온 경우, isRight()함수 호출시 말이 윷판의 오른쪽에 있다고 인식되므로 다시 출발하는 말로 인식이 됨. 만약 들어오는 중인 말이 시작지점에 위치한 경우, 그 말이 들어오는 중이라는 걸 나타내주기 위한 프로퍼티
+    // 만약 한바퀴를 돌거나, 도->빽도->빽도의 경우에는 그 말에 해당하는 isComingBack의 값을 true로 해주어, 이 말은 골인하는 중이라는 것을 표시해주는 프로퍼티
+    var stackedYut: [[String]] = [[],[]] //윷,모가 나올 경우 더 던질 수 있으므로, 나왔던 윷 모양을 저장해놓는 프로퍼티
     var previousPositionArr = [[Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)],
                                [Position(y: -1, x: -1),Position(y: -1, x: -1),Position(y: -1, x: -1)]]
     // 빽도를 처리해주기 위해 이전 Position을 저장해놓는 프로퍼티
